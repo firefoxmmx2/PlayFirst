@@ -145,4 +145,5 @@ object Clients extends Controller {
 	def Authenticated(f: AuthenticatedRequest[AnyContent] => Result): Action[AnyContent] = {
 		Authenticated(parse.anyContent)(f)
 	}
+	
 }
