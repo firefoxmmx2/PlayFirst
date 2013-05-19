@@ -1,0 +1,10 @@
+@(barForm:Form[String])
+@import helper._
+
+@main("Bar Page") {
+	@form(routes.Application.addBar) {
+		@inputText(barForm("name"))
+		<input type="submit" value="Add Bar">
+
+	}
+}

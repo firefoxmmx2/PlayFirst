@@ -1,0 +1,34 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET    /                         controllers.Application.index
+
+# Map static resources from the /public folder to the /assets URL path
+GET    /assets/*file             controllers.Assets.at(path="/public", file)
+
+GET    /tasks                    controllers.Application.tasks
+POST   /tasks/:id/delete         controllers.Application.deleteTask(id:Long)
+POST   /tasks                    controllers.Application.newTask
+
+GET    /bar                      controllers.Application.bar
+POST   /bar/add                  controllers.Application.addBar
+GET    /json/bar                 controllers.Application.listBar
+
+GET    /bar2                     controllers.Clients.toBar
+GET    /bar2s/json               controllers.Clients.listBar
+GET    /bar2/json/:bid           controllers.Clients.bar(bid:Long)
+POST   /bar2/update              controllers.Clients.updateBar
+POST   /bar2/add                 controllers.Clients.addBar
+POST   /bar2/delete/:bid         controllers.Clients.deleteBar(bid:Long)
+
+GET    /flash                    controllers.Clients.flash_
+POST   /flash/save               controllers.Clients.flashSave
+
+GET    /bodyParse                controllers.Clients.toBodyParse
+POST   /bodyParseAsText          controllers.Clients.save
+POST   /bodyParseAsJson          controllers.Clients.saveAsJson
+POST   /bodyParseAsFile          controllers.Clients.saveAsFile
+#POST   /bodyParseAsMixed   controllers.Clients.saveAsMixed
+POST   /bodyParseAsLengthLimit   controllers.Clients.saveAsLengthLimit

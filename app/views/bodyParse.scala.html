@@ -1,0 +1,25 @@
+@(message:String)
+@import helper._
+
+@main("body parse test") {
+	@form(routes.Clients.save) {
+		<input type="submit"  value="text parse">
+	}
+	@form(routes.Clients.saveAsJson) {
+		<input type="submit" value="json parse">
+	}
+	
+	@form(routes.Clients.saveAsFile) {
+		<input type="submit" value="file parse">
+	}
+	
+	@*form(routes.Clients.saveAsMixed) {
+		<input type="submit" value="mixed parse">
+	}*@
+	
+	@form(routes.Clients.saveAsLengthLimit) {
+		<input type="text" name="text">
+		<input type="submit" value="length parse">
+	}
+	
+}
