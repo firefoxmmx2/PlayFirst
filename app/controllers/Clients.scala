@@ -1,13 +1,16 @@
 package controllers
 
+import java.io._
+import models._
 import play.api._
+import play.api.data._
+import play.api.data.Forms._
+import play.api.libs._
+import play.api.libs.json._
 import play.api.mvc._
 import play.api.mvc.Security._
-import play.api.data._
-import models._
-import play.api.libs.json._
-import play.api.data.Forms._
-import java.io._
+import play.api.libs.concurrent.Akka
+import play.api.libs.iteratee.Enumerator
 
 object Clients extends Controller {
 	val barForm = Form(single("name" -> nonEmptyText))
@@ -131,19 +134,68 @@ object Clients extends Controller {
 
 	case class AuthenticatedRequest[A](user: User, private val request: Request[A]) extends WrappedRequest(request)
 
-	def Authenticated[A](p: BodyParser[A])(f: AuthenticatedRequest[A] => Result) = {
-		Action(p) { request =>
-			val result = for {
-				id <- request.session.get("user")
-				user <- User.find(request.getQueryString("id").getOrElse("0").toLong)
-			} yield f(Authenticated(user)(request))
-			result getOrElse Unauthorized
-		}
-	}
+	//	def Authenticated[A](p: BodyParser[A])(f: AuthenticatedRequest[A] => Result) = {
+	//		Action(p) { request =>
+	//			val result = for {
+	//				id <- request.session.get("user")
+	//				user <- User.find(request.getQueryString("id").getOrElse("0").toLong)
+	//			} yield f(Authenticated(user)(request))
+	//			result getOrElse Unauthorized
+	//		}
+	//	}
 
 	import play.api.mvc.BodyParsers._
-	def Authenticated(f: AuthenticatedRequest[AnyContent] => Result): Action[AnyContent] = {
-		Authenticated(parse.anyContent)(f)
+	//	def Authenticated(f: AuthenticatedRequest[AnyContent] => Result): Action[AnyContent] = {
+	//		Authenticated(parse.anyContent)(f)
+	//	}
+
+	val list = Action {
+		implicit request =>
+			val items = Bar.findAll
+			render {
+				case Accepts.Html => Ok(views.html.bar(barForm))
+				case Accepts.Json => Ok(Json.toJson(items))
+			}
 	}
-	
+
+	//	val futurePIValue:Future[Double]=computePIAsynchronously()
+	//	val futureResult:Future[Result]=futurePIValue map {
+	//		pi=> Ok("PI value computed:"+pi)
+	//	}
+
+	//	def index3=Action {
+	//		val futrueInt = Akka.future { 1+1 }
+	//			Async {
+	//			futureInt map(i=>Ok("God result:"+i))
+	//		}
+	//	}
+
+	def index3 = Action {
+		val file = new File("/tmp/(成年コミック) [胡桃屋ましみん] 肉妻通信 [08-01-01].zip")
+		val fileContent: Enumerator[Array[Byte]] = Enumerator.fromFile(file)
+
+		SimpleResult(
+			header = ResponseHeader(200),
+			body = fileContent)
+	}
+
+	def index4 = Action {
+		val file = new File("/tmp/(成年コミック) [胡桃屋ましみん] 肉妻通信 [08-01-01].zip")
+		val fileContent: Enumerator[Array[Byte]] = Enumerator.fromFile(file)
+		SimpleResult(
+			header = ResponseHeader(200,
+				Map(CONTENT_LENGTH -> file.length().toString)),
+			body = fileContent)
+	}
+
+	def index5 = Action {
+		Ok.sendFile(new File("/tmp/(成年コミック) [胡桃屋ましみん] 肉妻通信 [08-01-01].zip"))
+	}
+
+	def index6 = Action {
+		Ok.sendFile(
+			content = new File("/tmp/(成年コミック) [胡桃屋ましみん] 肉妻通信 [08-01-01].zip"),
+			fileName = _ => "termsOfService.pdf")
+	}
+
 }

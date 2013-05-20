@@ -32,3 +32,4 @@ POST   /bodyParseAsJson          controllers.Clients.saveAsJson
 POST   /bodyParseAsFile          controllers.Clients.saveAsFile
 #POST   /bodyParseAsMixed   controllers.Clients.saveAsMixed
 POST   /bodyParseAsLengthLimit   controllers.Clients.saveAsLengthLimit
+GET    /list                     controllers.Clients.list
