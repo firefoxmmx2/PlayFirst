@@ -33,3 +33,7 @@ POST   /bodyParseAsFile          controllers.Clients.saveAsFile
 #POST   /bodyParseAsMixed   controllers.Clients.saveAsMixed
 POST   /bodyParseAsLengthLimit   controllers.Clients.saveAsLengthLimit
 GET    /list                     controllers.Clients.list
+GET    /chunkedResponse          controllers.Application.chunkedResponse
+GET    /cometSocket              controllers.Application.comet
+GET    /cometMessage             controllers.Application.cometMessage
+GET    /cometMessage2            controllers.Application.cometMessage2

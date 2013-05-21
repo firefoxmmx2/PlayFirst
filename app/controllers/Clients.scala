@@ -124,6 +124,7 @@ object Clients extends Controller {
 			request =>
 				Ok("Hello world")
 		}
+
 	}
 
 	//	def index3 = Authenticated { user =>
