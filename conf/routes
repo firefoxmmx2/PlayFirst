@@ -51,3 +51,6 @@ GET    /removeSession            controllers.Application.removeSession
 GET    /newSession               controllers.Application.newSession
 GET    /webSocket                controllers.Application.webSocket
 GET    /webSocket2               controllers.Application.webSocket2
+GET    /json                     controllers.Application.sayHello
+GET    /json2                    controllers.Application.sayHello2
+GET    /jsonRes                  controllers.Application.sayHelloRes

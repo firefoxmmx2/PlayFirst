@@ -22,6 +22,8 @@ import play.api.templates.Html
 import play.api.mvc.Codec
 import play.api.mvc.WebSocket
 import play.api.libs.iteratee.Iteratee
+import play.api.libs.json.JsNull
+import play.api.libs.json.Reads
 
 object Application extends Controller {
 
@@ -69,12 +71,9 @@ object Application extends Controller {
     Ok(views.html.bar(barForm))
   }
 
-  implicit val jsonFormat = Json.writes[Bar]
-
   def listBar() = Action {
     val bars = Bar.findAll
-    val json = Json.toJson(bars)
-    Ok(json)
+    Ok("Hello World")
   }
 
   def chunkedResponse = Action {
@@ -238,4 +237,52 @@ object Application extends Controller {
       val out = Enumerator("Hello!") >>> Enumerator.eof
       (in, out)
   })
+
+  //Json处理
+  val jNumber = Json.toJson(4)
+  val jArray = Json.toJson(Seq(1, 2, 3, 4))
+  //  val jArray2=Json.toJson(Seq(1,"Bob",3,4)) 这是错的, Seq[Int]不能带String
+  val jArray3 = Json.toJson(Seq(Json.toJson(1), Json.toJson("Bob"), Json.toJson(3), Json.toJson(4)))
+  val jObject = Json.toJson(
+    Map(
+      "users" -> Seq(
+        Json.toJson(
+          Map("name" -> Json.toJson("Bob"),
+            "age" -> Json.toJson(31),
+            "email" -> Json.toJson("bob@gmail.com")
+          )
+        ),
+        Json.toJson(
+          Map(
+            "name" -> Json.toJson("kiki"),
+            "age" -> Json.toJson(25),
+            "email" -> JsNull
+          )
+        )
+      )
+    )
+  )
+  //Json 处理请求
+  def sayHello = Action {
+    request =>
+      request.body.asJson.map({ json =>
+        (json \ "name").asOpt[String].map(name => Ok("Hello " + name)).getOrElse(BadRequest("Missing parameter [name]"))
+      }).getOrElse(BadRequest("Expecting Json data"))
+  }
+  //更好的办法
+  def sayHello2 = Action(parse.json) { request =>
+    (request.body \ "name").asOpt[String].map {
+      name => Ok("Hello " + name)
+    }.getOrElse({
+      BadRequest("Missing parameter [name]")
+    })
+  }
+
+  def sayHelloRes = Action(parse.json) { request =>
+    (request.body \ "name").asOpt[String].map {
+      name =>
+        Ok(Json.toJson(Map("status" -> " Ko", "message" -> ("Hello " + name))))
+    }.getOrElse { BadRequest(Json.toJson(Map("st tus" -> " O", "message" -> "Missing parameter [name]"))) }
+  }
+
 }
