@@ -37,3 +37,15 @@ GET    /chunkedResponse          controllers.Application.chunkedResponse
 GET    /cometSocket              controllers.Application.comet
 GET    /cometMessage             controllers.Application.cometMessage
 GET    /cometMessage2            controllers.Application.cometMessage2
+
+GET    /httpHeader               controllers.Application.httpHeader
+GET    /httpHeader2              controllers.Application.httpHeader2
+GET    /cookie                   controllers.Application.cookie
+GET    /discardCookie            controllers.Application.discardCookie
+GET    /changeCharset            controllers.Application.changeCharset
+GET    /session                  controllers.Application.session_
+GET    /session2                 controllers.Application.session_2
+GET    /saveSession              controllers.Application.saveSession
+GET    /appendSession            controllers.Application.appendSession
+GET    /removeSession            controllers.Application.removeSession
+GET    /newSession               controllers.Application.newSession
