@@ -2,9 +2,20 @@
 
 @import helper._
 
+@*
+注释
+*@
 @main("Play First") {
-	@form(routes.Clients.list) {
-		<input type="sumbit" value="跳转到list">
+	@{val name = "<h1>ffmmx</h1>"; name}
+	
+	@*转译*@
+	@*@Html(name)*@
+	@*@defining(name:String) {
+		name => name match {
+			case String => <h1>Hello @name</h1>
+		}
 	}
+	*@
+
 	@play20.welcome(message)
 }

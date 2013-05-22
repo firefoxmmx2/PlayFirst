@@ -20,6 +20,8 @@ import play.api.mvc.ResponseHeader
 import play.api.mvc.SimpleResult
 import play.api.templates.Html
 import play.api.mvc.Codec
+import play.api.mvc.WebSocket
+import play.api.libs.iteratee.Iteratee
 
 object Application extends Controller {
 
@@ -216,4 +218,24 @@ object Application extends Controller {
   def newSession = Action {
     Ok("Bye").withNewSession
   }
+
+  //  网络套接字,一直打开
+  def webSocket = WebSocket.using[String] {
+    request =>
+      // Log events to the console
+      val in = Iteratee.foreach[String](println).mapDone {
+        _ => println("Disconnected")
+      }
+
+      //      val Send a single "Hello!" message
+      val out = Enumerator("Hello")
+      (in, out)
+  }
+  //网络套接字,在发送消息后自动关闭 >>> Enumerator.eof
+  def webSocket2 = WebSocket.using[String]({
+    request =>
+      val in = Iteratee.consume[String]()
+      val out = Enumerator("Hello!") >>> Enumerator.eof
+      (in, out)
+  })
 }

@@ -49,3 +49,5 @@ GET    /saveSession              controllers.Application.saveSession
 GET    /appendSession            controllers.Application.appendSession
 GET    /removeSession            controllers.Application.removeSession
 GET    /newSession               controllers.Application.newSession
+GET    /webSocket                controllers.Application.webSocket
+GET    /webSocket2               controllers.Application.webSocket2
