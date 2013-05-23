@@ -54,3 +54,8 @@ GET    /webSocket2               controllers.Application.webSocket2
 GET    /json                     controllers.Application.sayHello
 GET    /json2                    controllers.Application.sayHello2
 GET    /jsonRes                  controllers.Application.sayHelloRes
+GET    /jsonSearchResult         controllers.Application.jsonSearchResult
+GET    /jsonResult               controllers.Application.jsonResult
+POST   /xmlRequest               controllers.Application.xmlRequest
+POST   /xmlReqBetter             controllers.Application.xmlReqBetter
+POST   /xmlResponse              controllers.Application.xmlResponse

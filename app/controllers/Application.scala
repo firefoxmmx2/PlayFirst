@@ -1,29 +1,16 @@
 package controllers
 
 import java.io.FileInputStream
-import models.Bar
-import models.Task
-import play.api.data.Form
-import play.api.data.Forms.nonEmptyText
-import play.api.data.Forms.single
-import play.api.libs.Comet
-import play.api.libs.functional.syntax.toFunctionalBuilderOps
-import play.api.libs.iteratee.Enumeratee
-import play.api.libs.iteratee.Enumerator
-import play.api.libs.json.Json
-import play.api.mvc.Action
-import play.api.mvc.ChunkedResult
-import play.api.mvc.Controller
-import play.api.mvc.Cookie
-import play.api.mvc.ResponseHeader
-import play.api.mvc.ResponseHeader
-import play.api.mvc.SimpleResult
+import models._
+import play.api.data._
+import play.api.data.Forms._
+import play.api.libs._
+import play.api.libs.functional.syntax._
+import play.api.libs.iteratee._
+import play.api.libs.json._
+import play.api.libs.json.Json._
+import play.api.mvc._
 import play.api.templates.Html
-import play.api.mvc.Codec
-import play.api.mvc.WebSocket
-import play.api.libs.iteratee.Iteratee
-import play.api.libs.json.JsNull
-import play.api.libs.json.Reads
 
 object Application extends Controller {
 
@@ -285,4 +272,85 @@ object Application extends Controller {
     }.getOrElse { BadRequest(Json.toJson(Map("st tus" -> " O", "message" -> "Missing parameter [name]"))) }
   }
 
+  case class SearchResult[T](elements: List[T], page: Int, pageSize: Int, total: Int)
+  import play.api.libs.functional.syntax._
+  implicit val searchResultWrite: Writes[SearchResult[String]] = (
+    (__ \ "elements").write[List[String]] and
+    (__ \ "page").write[Int] and
+    (__ \ "pageSize").write[Int] and
+    (__ \ "total").write[Int]
+  )(unlift(SearchResult.unapply[String]))
+
+  def jsonSearchResult = Action {
+    val res = SearchResult[String](
+      elements = List[String]("hello"),
+      page = 1,
+      pageSize = 5,
+      total = 10
+    )
+    Ok(toJson(res))
+  }
+  def jsonResult = Action {
+    val res = SearchResult[String](
+      elements = List[String]("hello"),
+      page = 1,
+      pageSize = 5,
+      total = 10
+    )
+    import com.codahale.jerkson.Json
+    Ok(Json.generate(res))
+  }
+  //  implicit val searchResultFormat:Reads[SearchResult[String]]=
+  //  object SearchResult {
+  //    implicit def searchResultReads[T](implicit fmt: Reads[T]): Reads[SearchResult[T]] = new Reads[SearchResult[T]] {
+  //      def reads(json: JsValue): SearchResult[T] = new SearchResult[T](
+  //        (json \ "elements") match {
+  //          case JsArray(ts) => ts.map(t => fromJson(t)(fmt))
+  //          case _ => throw new RuntimeException("Elements MUST be a list")
+  //        },
+  //        (json \ "page").as[Int],
+  //        (json \ "pageSize").as[Int],
+  //        (json \ "total").as[Int]
+  //      )
+  //    }
+  //
+  //    implicit def searchResultWrites[T](implicit fmt: Writes[T]): Writes[SearchResult[T]] = new Writes[SearchResult[T]] {
+  //      def writes(ts: SearchResult[T]) = JsObject(Seq(
+  //        "page" -> JsNumber(ts.page),
+  //        "pageSize" -> JsNumber(ts.pageSize),
+  //        "total" -> JsNumber(ts.total),
+  //        "elements" -> JsArray(ts.elements.map(toJson(_)))
+  //      ))
+  //    }
+  //  }
+
+  //  处理xml请求
+  def xmlRequest = Action {
+    request =>
+      request.body.asXml.map({
+        xml =>
+          (xml \\ "name" headOption).map(_.text).map({ name =>
+            Ok("Hello " + name)
+          }).getOrElse(BadRequest("Missing parameter [name]"))
+      }).getOrElse(BadRequest("Excepting Xml data"))
+  }
+  //  更简单的方法
+  def xmlReqBetter = Action(parse.xml) { request =>
+    (request.body \\ "name" headOption).map(_.text).map {
+      name => Ok("Hello " + name)
+    }.getOrElse {
+      BadRequest("Missing parameter [name]")
+    }
+
+  }
+  //  xml响应
+  def xmlResponse = Action(parse.xml) {
+    request =>
+      (request.body \\ "name" headOption).map(_.text).map({
+        name =>
+          Ok(<message status="OK">Hello { name }</message>)
+      }).getOrElse({
+        BadRequest(<message status="KO">Missing parameter [name]</message>)
+      })
+  }
 }
