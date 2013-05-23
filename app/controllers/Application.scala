@@ -24,7 +24,7 @@ import play.api.mvc.WebSocket
 import play.api.libs.iteratee.Iteratee
 import play.api.libs.json.JsNull
 import play.api.libs.json.Reads
-
+import java.io.File
 object Application extends Controller {
 
   def index = Action {
@@ -249,19 +249,12 @@ object Application extends Controller {
         Json.toJson(
           Map("name" -> Json.toJson("Bob"),
             "age" -> Json.toJson(31),
-            "email" -> Json.toJson("bob@gmail.com")
-          )
-        ),
+            "email" -> Json.toJson("bob@gmail.com"))),
         Json.toJson(
           Map(
             "name" -> Json.toJson("kiki"),
             "age" -> Json.toJson(25),
-            "email" -> JsNull
-          )
-        )
-      )
-    )
-  )
+            "email" -> JsNull)))))
   //Json 处理请求
   def sayHello = Action {
     request =>
@@ -285,4 +278,42 @@ object Application extends Controller {
     }.getOrElse { BadRequest(Json.toJson(Map("st tus" -> " O", "message" -> "Missing parameter [name]"))) }
   }
 
+  //  body 解析器
+  def toBodyParser = Action {
+    Ok(views.html.bodyParser())
+  }
+
+  //  文本解析器,严格检查CONTENT-TYPE
+  def textParser = Action(parse.text) {
+    request =>
+      Ok("Got: " + request.body)
+  }
+  //文本解析器,不严格检查
+  def tolerantTextParser = Action(parse.tolerantText) {
+    request =>
+      Ok("Got: " + request.body)
+  }
+  //文件解析器
+  def fileParser = Action(parse.file(new File("/tmp/.upload"))) { request =>
+    Ok("Saved the request content to" + request.body);
+  }
+  val storeInfoUserFile = parse.using[File] {
+    request =>
+      request.session.get("username").map({
+        user => parse.file(new File("/tmp/" + user + ".upload"))
+      }).getOrElse { parse.file(new File("/tmp/test.upload")) }
+  }
+  //混合解析器
+  def mixedParser = Action(storeInfoUserFile) {
+    request =>
+      Ok("Saved the request content to" + request.body);
+  }
+
+  def jsonParser = TODO
+
+  //  长度限制的解析器
+  def lengthLimitParser = Action(parse.maxLength(10, parser = parse.tolerantText)) {
+    request =>
+      Ok("Saved the request content to " + request.body)
+  }
 }

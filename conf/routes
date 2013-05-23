@@ -54,3 +54,10 @@ GET    /webSocket2               controllers.Application.webSocket2
 GET    /json                     controllers.Application.sayHello
 GET    /json2                    controllers.Application.sayHello2
 GET    /jsonRes                  controllers.Application.sayHelloRes
+GET    /bodyParser               controllers.Application.toBodyParser
+POST   /textParser               controllers.Application.textParser
+POST   /tolerantTextParser       controllers.Application.tolerantTextParser
+POST   /fileParser               controllers.Application.fileParser
+POST   /jsonParser               controllers.Application.jsonParser
+POST   /mixedParser              controllers.Application.mixedParser
+POST   /lengthLimitParser        controllers.Application.lengthLimitParser
