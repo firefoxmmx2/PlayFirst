@@ -1,0 +1,30 @@
+@* bodyParser Template File *@
+@()
+@import helper._
+
+@main("bodyParser ") {
+	
+	@form(routes.Application.textParser) {
+		<input type="submit"  value="text parser">
+	}
+	@form(routes.Application.tolerantTextParser) {
+		<input type="submit"  value="tolerantText parser">
+	}
+	@form(routes.Application.jsonParser) {
+		<input type="submit" value="json parser">
+	}
+	
+	@form(routes.Application.fileParser) {
+		<input type="submit" value="file parser">
+	}
+	
+	@form(routes.Application.mixedParser) {
+		<input type="submit" value="mixed parser">
+	}
+	
+	@form(routes.Application.lengthLimitParser){
+			<input type="text" name="fff">
+		<input type="submit" value="length parse">
+	}
+}
+
