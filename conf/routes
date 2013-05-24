@@ -61,3 +61,8 @@ POST   /fileParser               controllers.Application.fileParser
 POST   /jsonParser               controllers.Application.jsonParser
 POST   /mixedParser              controllers.Application.mixedParser
 POST   /lengthLimitParser        controllers.Application.lengthLimitParser
+GET    /jsonSearchResult         controllers.Application.jsonSearchResult
+GET    /jsonResult               controllers.Application.jsonResult
+POST   /xmlRequest               controllers.Application.xmlRequest
+POST   /xmlReqBetter             controllers.Application.xmlReqBetter
+POST   /xmlResponse              controllers.Application.xmlResponse
