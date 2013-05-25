@@ -267,7 +267,8 @@ object Application extends Controller {
 
   //  body 解析器
   def toBodyParser = Action {
-    Ok(views.html.bodyParser())
+    //    Ok(views.html.bodyParser())
+    Ok("")
   }
 
   //  文本解析器,严格检查CONTENT-TYPE
@@ -382,5 +383,33 @@ object Application extends Controller {
         BadRequest(<message status="KO">Missing parameter [name]</message>)
       })
   }
+  //  文件上传页面
+  def fileUploadHtml = Action {
+    Ok(views.html.fileRequest())
+  }
+  //  文件上传请求
+  def fileRequest = Action(parse.multipartFormData) {
+    reqeust =>
+      reqeust.body.file("picture").map {
+        picture =>
+          import java.io.File
+          val filename = picture.filename
+          val contentType = picture.contentType
+          picture.ref.moveTo(new File("/tmp/picture"))
+          Ok("File uploaded")
+      }.getOrElse {
+        Redirect(routes.Application.index).flashing("error" -> "Missing file")
+      }
+  }
 
+  //  ajax异步上传
+  def ajaxUpload = Action(parse.temporaryFile) {
+    request =>
+      request.body.moveTo(new File("/tmp/picture"), true)
+      Ok("File Upload")
+  }
+  //ajax上传页面
+  def ajaxUploadHtml = Action {
+    Ok(views.html.ajaxUploadHtml())
+  }
 }

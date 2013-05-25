@@ -66,3 +66,7 @@ GET    /jsonResult               controllers.Application.jsonResult
 POST   /xmlRequest               controllers.Application.xmlRequest
 POST   /xmlReqBetter             controllers.Application.xmlReqBetter
 POST   /xmlResponse              controllers.Application.xmlResponse
+GET    /fileUploadHtml           controllers.Application.fileUploadHtml
+POST   /fileRequest              controllers.Application.fileRequest
+GET    /ajaxUploadHtml           controllers.Application.ajaxUploadHtml
+POST   /ajaxUpload               controllers.Application.ajaxUpload
