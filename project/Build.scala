@@ -11,7 +11,8 @@ object ApplicationBuild extends Build {
     // Add your project dependencies here,
     jdbc,
     anorm,
-    "com.cloudphysics" % "jerkson_2.10" % "0.6.3"
+    "com.cloudphysics" % "jerkson_2.10" % "0.6.3",
+    "org.scalaquery" % "scalaquery_2.9.0" % "0.10.0-M1"
   )
 
 
