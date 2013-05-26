@@ -1,0 +1,20 @@
+@* ajaxUploadHtml Template File *@
+@()
+@import helper._
+
+@main("ajax upload") {
+	<input type="file" name="picture">
+	<p>
+		<input type="button" value="ajax upload"> 
+	</p>
+
+<script type="text/javascript">
+	$("input:button").bind("click",function(){
+		$.post("@routes.Application.ajaxUpload",{picture:$("input:file").val()},function(data){
+			alert(data);
+		});
+	});
+</script>
+	
+}
+	

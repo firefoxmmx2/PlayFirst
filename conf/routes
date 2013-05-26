@@ -3,70 +3,61 @@
 # ~~~~
 
 # Home page
-GET    /                         controllers.Application.index
+GET    /                     controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path
-GET    /assets/*file             controllers.Assets.at(path="/public", file)
+GET    /assets/*file         controllers.Assets.at(path="/public", file)
 
-GET    /tasks                    controllers.Application.tasks
-POST   /tasks/:id/delete         controllers.Application.deleteTask(id:Long)
-POST   /tasks                    controllers.Application.newTask
+GET    /tasks                controllers.Application.tasks
+POST   /tasks/:id/delete     controllers.Application.deleteTask(id:Long)
+POST   /tasks                controllers.Application.newTask
 
-GET    /bar                      controllers.Application.bar
-POST   /bar/add                  controllers.Application.addBar
-GET    /json/bar                 controllers.Application.listBar
+GET    /bar                  controllers.Application.bar
+POST   /bar/add              controllers.Application.addBar
+GET    /json/bar             controllers.Application.listBar
 
-GET    /bar2                     controllers.Clients.toBar
-GET    /bar2s/json               controllers.Clients.listBar
-GET    /bar2/json/:bid           controllers.Clients.bar(bid:Long)
-POST   /bar2/update              controllers.Clients.updateBar
-POST   /bar2/add                 controllers.Clients.addBar
-POST   /bar2/delete/:bid         controllers.Clients.deleteBar(bid:Long)
-
-GET    /flash                    controllers.Clients.flash_
-POST   /flash/save               controllers.Clients.flashSave
-
-GET    /bodyParse                controllers.Clients.toBodyParse
-POST   /bodyParseAsText          controllers.Clients.save
-POST   /bodyParseAsJson          controllers.Clients.saveAsJson
-POST   /bodyParseAsFile          controllers.Clients.saveAsFile
 #POST   /bodyParseAsMixed   controllers.Clients.saveAsMixed
-POST   /bodyParseAsLengthLimit   controllers.Clients.saveAsLengthLimit
-GET    /list                     controllers.Clients.list
-GET    /chunkedResponse          controllers.Application.chunkedResponse
-GET    /cometSocket              controllers.Application.comet
-GET    /cometMessage             controllers.Application.cometMessage
-GET    /cometMessage2            controllers.Application.cometMessage2
+GET    /chunkedResponse      controllers.Application.chunkedResponse
+GET    /cometSocket          controllers.Application.comet
+GET    /cometMessage         controllers.Application.cometMessage
+GET    /cometMessage2        controllers.Application.cometMessage2
 
-GET    /httpHeader               controllers.Application.httpHeader
-GET    /httpHeader2              controllers.Application.httpHeader2
-GET    /cookie                   controllers.Application.cookie
-GET    /discardCookie            controllers.Application.discardCookie
-GET    /changeCharset            controllers.Application.changeCharset
-GET    /session                  controllers.Application.session_
-GET    /session2                 controllers.Application.session_2
-GET    /saveSession              controllers.Application.saveSession
-GET    /appendSession            controllers.Application.appendSession
-GET    /removeSession            controllers.Application.removeSession
-GET    /newSession               controllers.Application.newSession
-GET    /webSocket                controllers.Application.webSocket
-GET    /webSocket2               controllers.Application.webSocket2
-GET    /json                     controllers.Application.sayHello
-GET    /json2                    controllers.Application.sayHello2
-GET    /jsonRes                  controllers.Application.sayHelloRes
-GET    /bodyParser               controllers.Application.toBodyParser
-POST   /textParser               controllers.Application.textParser
-POST   /tolerantTextParser       controllers.Application.tolerantTextParser
-POST   /fileParser               controllers.Application.fileParser
-POST   /jsonParser               controllers.Application.jsonParser
-POST   /mixedParser              controllers.Application.mixedParser
-POST   /lengthLimitParser        controllers.Application.lengthLimitParser
-GET    /jsonSearchResult         controllers.Application.jsonSearchResult
-GET    /jsonResult               controllers.Application.jsonResult
-POST   /xmlRequest               controllers.Application.xmlRequest
-POST   /xmlReqBetter             controllers.Application.xmlReqBetter
-POST   /xmlResponse              controllers.Application.xmlResponse
-GET    /fileUploadHtml           controllers.Application.fileUploadHtml
-POST   /fileRequest              controllers.Application.fileRequest
-GET    /ajaxUploadHtml           controllers.Application.ajaxUploadHtml
-POST   /ajaxUpload               controllers.Application.ajaxUpload
+GET    /httpHeader           controllers.Application.httpHeader
+GET    /httpHeader2          controllers.Application.httpHeader2
+GET    /cookie               controllers.Application.cookie
+GET    /discardCookie        controllers.Application.discardCookie
+GET    /changeCharset        controllers.Application.changeCharset
+GET    /session              controllers.Application.session_
+GET    /session2             controllers.Application.session_2
+GET    /saveSession          controllers.Application.saveSession
+GET    /appendSession        controllers.Application.appendSession
+GET    /removeSession        controllers.Application.removeSession
+GET    /newSession           controllers.Application.newSession
+GET    /webSocket            controllers.Application.webSocket
+GET    /webSocket2           controllers.Application.webSocket2
+GET    /json                 controllers.Application.sayHello
+GET    /json2                controllers.Application.sayHello2
+GET    /jsonRes              controllers.Application.sayHelloRes
+GET    /bodyParser           controllers.Application.toBodyParser
+POST   /textParser           controllers.Application.textParser
+POST   /tolerantTextParser   controllers.Application.tolerantTextParser
+POST   /fileParser           controllers.Application.fileParser
+POST   /jsonParser           controllers.Application.jsonParser
+POST   /mixedParser          controllers.Application.mixedParser
+POST   /lengthLimitParser    controllers.Application.lengthLimitParser
+GET    /jsonSearchResult     controllers.Application.jsonSearchResult
+GET    /jsonResult           controllers.Application.jsonResult
+POST   /xmlRequest           controllers.Application.xmlRequest
+POST   /xmlReqBetter         controllers.Application.xmlReqBetter
+POST   /xmlResponse          controllers.Application.xmlResponse
+GET    /fileUploadHtml       controllers.Application.fileUploadHtml
+POST   /fileRequest          controllers.Application.fileRequest
+GET    /ajaxUploadHtml       controllers.Application.ajaxUploadHtml
+POST   /ajaxUpload           controllers.Application.ajaxUpload
+GET    /barNameList          controllers.Application.barNameList
+GET    /firstBar             controllers.Application.firstBar
+GET    /barPatternMatching   controllers.Application.barPatternMatching
+GET    /barCount             controllers.Application.barCount
+GET    /barClob              controllers.Application.barSpecialDataTypeClob
+GET    /barBinary            controllers.Application.barSpecialDataTypeBinary
+GET    /barScalaQuery        controllers.Application.barScalaQuery

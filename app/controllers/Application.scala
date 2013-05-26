@@ -4,6 +4,7 @@ import java.io.FileInputStream
 import models._
 import play.api.data._
 import play.api.data.Forms._
+import play.api.data.format.Formats._
 import play.api.libs._
 import play.api.libs.functional.syntax._
 import play.api.libs.iteratee._
@@ -41,17 +42,25 @@ object Application extends Controller {
     Redirect(routes.Application.tasks)
   }
 
-  val barForm = Form(single("name" -> nonEmptyText))
+  val barForm = Form(
+    mapping(
+      "id" -> ignored(0l),
+      "name" -> text,
+      "summary" -> text
+    )(
+        (id, name, summeray) => Bar(id, name, summeray)
+      )((bar: Bar) => Some(bar.id, bar.name, bar.summary))
+  )
 
   def addBar = Action {
     implicit request =>
       barForm.bindFromRequest.fold(
         errors => BadRequest,
+        //简洁写法
         {
-          case (name) =>
-            Bar.create(Bar(0, name))
-            Redirect(routes.Application.bar)
-        })
+          case (bar) => Bar.create(bar); Redirect(routes.Application.bar)
+        }
+      )
   }
 
   def bar = Action {
@@ -411,5 +420,42 @@ object Application extends Controller {
   //ajax上传页面
   def ajaxUploadHtml = Action {
     Ok(views.html.ajaxUploadHtml())
+  }
+
+  //使用流API数据
+  def barNameList = Action {
+    import com.codahale.jerkson.Json
+    Ok(Json.generate(Bar.findBarNameList))
+  }
+
+  //取第一个bar记录
+  def firstBar = Action {
+    import com.codahale.jerkson.Json
+    Ok(Json.generate(Bar.findFirstBar))
+  }
+  //取bar记录数
+  def barCount = Action {
+    import com.codahale.jerkson.Json
+    Ok(Json.generate(Bar.countBar))
+  }
+  //使用正则匹配ANORM
+  def barPatternMatching = Action {
+    import com.codahale.jerkson.Json
+    Ok(Json.generate(Bar.findBarByPattern))
+  }
+
+  def barSpecialDataTypeClob = Action {
+    import com.codahale.jerkson.Json
+    Ok(Json.generate(Bar.findBarByClob))
+  }
+
+  def barSpecialDataTypeBinary = Action {
+    import com.codahale.jerkson.Json
+    Ok(Json.generate(Bar.findBarByBinary))
+  }
+
+  def barScalaQuery = Action {
+    import com.codahale.jerkson.Json
+    Ok(Json.generate(Bar2.find))
   }
 }
