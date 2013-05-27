@@ -12,7 +12,8 @@ object ApplicationBuild extends Build {
     jdbc,
     anorm,
     "com.cloudphysics" % "jerkson_2.10" % "0.6.3",
-    "org.scalaquery" % "scalaquery_2.9.0" % "0.10.0-M1"
+    "org.scalaquery" % "scalaquery_2.9.0" % "0.10.0-M1",
+    "org.squeryl" % "squeryl_2.10" % "0.9.5-6"
   )
 
 

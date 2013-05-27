@@ -61,3 +61,4 @@ GET    /barCount             controllers.Application.barCount
 GET    /barClob              controllers.Application.barSpecialDataTypeClob
 GET    /barBinary            controllers.Application.barSpecialDataTypeBinary
 GET    /barScalaQuery        controllers.Application.barScalaQuery
+GET	/book	controllers.Application.

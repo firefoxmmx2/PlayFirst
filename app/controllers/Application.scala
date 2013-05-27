@@ -458,4 +458,24 @@ object Application extends Controller {
     import com.codahale.jerkson.Json
     Ok(Json.generate(Bar2.find))
   }
+  import com.codahale.jerkson.Json
+ 
+  val bookForm=Form(
+    mapping(
+      "title"->text,
+      ""
+    )    
+  )
+  //添加书籍
+  def addBook=Action{
+    Ok(routes.Application.booklist)
+  }
+  
+  def toBooks=Action{
+    Ok(views.html.books())
+  }
+  
+  def booklist=Action{
+    Ok(Json.generate(Book.findAll))
+  }
 }
