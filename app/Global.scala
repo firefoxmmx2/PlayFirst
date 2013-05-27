@@ -6,8 +6,9 @@ import play.api.db._
 object Global extends GlobalSettings {
   override def onStart(app: Application) {
     implicit val _app = app
+    println("Initializing squeryl session factory")
     Logger.info("Initializing squeryl session factory")
-    SessionFactory.concreteFactory = Some(() => Session.create(DB.getConnection(), new H2Adapter))
+    SessionFactory.concreteFactory = Some(() => Session.create(DB.getConnection()(app), new H2Adapter))
     Logger.info("Application has started")
 
   }

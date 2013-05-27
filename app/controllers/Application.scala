@@ -1,6 +1,6 @@
 package controllers
 
-import java.io.FileInputStream
+import java.io._
 import models._
 import play.api.data._
 import play.api.data.Forms._
@@ -12,7 +12,6 @@ import play.api.libs.json._
 import play.api.libs.json.Json._
 import play.api.mvc._
 import play.api.templates.Html
-import java.io.File
 object Application extends Controller {
 
   def index = Action {
@@ -459,23 +458,49 @@ object Application extends Controller {
     Ok(Json.generate(Bar2.find))
   }
   import com.codahale.jerkson.Json
- 
-  val bookForm=Form(
+
+  val bookForm = Form(
     mapping(
-      "title"->text,
-      ""
-    )    
+      "title" -> text,
+      "lastName" -> text,
+      "firstName" -> text
+    )((title, lastName, firstName) => Book(title = title, author = Author(firstName = firstName, lastName = lastName)))((book: Book) => Some(book.title, book.author.firstName, book.author.lastName))
   )
-  //添加书籍
-  def addBook=Action{
-    Ok(routes.Application.booklist)
+  //事物
+  import org.squeryl.PrimitiveTypeMode._
+  //创建一个带事物的Action Wrapper
+  object Action {
+    def apply[A](bodyParser: BodyParser[A])(block: Request[A] => Result): Action[A] = {
+      Action(bodyParser) {
+        implicit request =>
+          inTransaction {
+            block(request)
+          }
+      }
+
+    }
+
+    def apply(block: Request[AnyContent] => Result): Action[AnyContent] = apply(BodyParsers.parse.anyContent)(block)
+    def apply(block: => Result): Action[AnyContent] = apply(_ => block)
   }
-  
-  def toBooks=Action{
+  //添加书籍
+  def addBook = Action {
+    implicit request =>
+      bookForm.bindFromRequest.fold(
+        error => BadRequest,
+        {
+          case (book: Book) =>
+            Book.insert(book)
+            Redirect(routes.Application.booklist)
+        }
+      )
+  }
+
+  def toBooks = Action {
     Ok(views.html.books())
   }
-  
-  def booklist=Action{
+
+  def booklist = Action {
     Ok(Json.generate(Book.findAll))
   }
 }
