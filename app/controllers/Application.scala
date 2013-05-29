@@ -13,6 +13,7 @@ import play.api.libs.json.Json._
 import play.api.mvc._
 import play.api.templates.Html
 import play.Logger
+import play.api.cache._
 object Application extends Controller {
 
   def index = Action {
@@ -515,4 +516,44 @@ object Application extends Controller {
     Logger.info("Book.findAll() == " + lst)
     Ok(Json.generate(lst)).as(JSON)
   }
+  import play.api.Play.current
+  //缓存数据对象
+  def barNameListCache = Action {
+    Cache.set("item.key", Bar.findBarNameList)
+    val barList: Option[List[Bar]] = Cache.getAs[List[Bar]]("item.key")
+    Ok(Json.generate(barList))
+  }
+  //缓存数据对象使用默认值
+  def userList = Action {
+    val user: User = Cache.getOrElse("user") {
+      User.findById(1l)
+    }
+  }
+//缓存对象的删除
+  def removeCacheUser = Action {
+    try {
+      Cache.remove("user")
+    }
+    catch {
+      case t => Ok("清除用户缓存失败")
+    }
+    Ok("清楚用户缓存")
+  }
+  
+  //缓存一个http 响应
+  def cacheIndex = Cached("homePage") {
+    Action {
+      Ok("Hello world")
+    }
+  }
+  //响应调用前的时候调用缓存
+//  import play.mvc._
+//  def userProfile = Authenticated {
+//    user =>
+//      Cached(req=>"profile"+user) {
+//        Action {
+//          Ok(views.html.profile(User.find(user)))
+//        }
+//      }
+//  }
 }
