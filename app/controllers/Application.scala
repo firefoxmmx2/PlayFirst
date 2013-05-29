@@ -12,6 +12,7 @@ import play.api.libs.json._
 import play.api.libs.json.Json._
 import play.api.mvc._
 import play.api.templates.Html
+import play.Logger
 object Application extends Controller {
 
   def index = Action {
@@ -461,15 +462,22 @@ object Application extends Controller {
 
   val bookForm = Form(
     mapping(
-      "title" -> text,
-      "lastName" -> text,
-      "firstName" -> text
-    )((title, lastName, firstName) => Book(title = title, author = Author(firstName = firstName, lastName = lastName)))((book: Book) => Some(book.title, book.author.firstName, book.author.lastName))
+      "title" -> nonEmptyText,
+      "author" -> mapping(
+        "lastName" -> nonEmptyText,
+        "firstName" -> nonEmptyText,
+        "email" -> optional(text)
+      )(
+          (lastName, firstName, email) => Author(firstName = firstName, lastName = lastName, email = email)
+        )(
+            (author) => Some(author.firstName, author.lastName, author.email)
+          )
+    )((title, author) => Book(title = title, author = author))((book) => Some(book.title, book.author))
   )
   //事物
   import org.squeryl.PrimitiveTypeMode._
   //创建一个带事物的Action Wrapper
-  object Action {
+  object TxAction {
     def apply[A](bodyParser: BodyParser[A])(block: Request[A] => Result): Action[A] = {
       Action(bodyParser) {
         implicit request =>
@@ -484,12 +492,14 @@ object Application extends Controller {
     def apply(block: => Result): Action[AnyContent] = apply(_ => block)
   }
   //添加书籍
-  def addBook = Action {
+  def addBook = TxAction {
     implicit request =>
       bookForm.bindFromRequest.fold(
         error => BadRequest,
         {
           case (book: Book) =>
+            val author = Author.insert(book.author)
+            book.copy(author = author)
             Book.insert(book)
             Redirect(routes.Application.booklist)
         }
@@ -497,10 +507,12 @@ object Application extends Controller {
   }
 
   def toBooks = Action {
-    Ok(views.html.books())
+    Ok(views.html.books(bookForm))
   }
 
-  def booklist = Action {
-    Ok(Json.generate(Book.findAll))
+  def booklist = TxAction {
+    val lst = Book.findAll()
+    Logger.info("Book.findAll() == " + lst)
+    Ok(Json.generate(lst)).as(JSON)
   }
 }

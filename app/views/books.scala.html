@@ -1,6 +1,14 @@
 @* books Template File *@
-@()
+@(bookForm:Form[models.Book])
+@import helper._
 
 @main("books add page") {
-	
+	@form(action=routes.Application.addBook) {
+		@inputText(bookForm("title"))
+		@inputText(bookForm("author.lastName"))
+		@inputText(bookForm("author.firstName"))
+		@inputText(bookForm("author.email"))
+		
+		<input type="submit" value="add book">
+	}
 }
