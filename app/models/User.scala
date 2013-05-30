@@ -2,34 +2,34 @@ package models
 
 import play.api.db._
 import play.api.Play.current
-import org.squeryl.PrimitiveTypeMode._
+
 import org.squeryl._
 import org.squeryl.annotations._
-import org.squeryl.dsl.ManyToOne
-import org.squeryl.dsl.OneToMany
+import org.squeryl.PrimitiveTypeMode._
+import org.squeryl.dsl._
+
+
 
 case class Address(id: Long,
                    province: String,
                    city: String,
                    country: String,
-                   street: String,
-                   road: String,
-                   No: String) extends KeyedEntity[Long] {
+                   street: Option[String],
+                   road: Option[String],
+                   No: Option[String]) extends KeyedEntity[Long] {
   val users:OneToMany[User] = System.addressToUsers.left(this)
 }
 case class User(id: Long,
                 name: String,
                 username: String,
                 password: String,
-                email: String,
+                email: Option[String],
                 addressId: Long) extends KeyedEntity[Long] {
-  lazy val address: ManyToOne[Address] = System.addressToUsers.right(this)
+  var uAddress:Address = _
 }
 
 object User {
-  def find(): List[User] = {
-    from(System.users)(user => select(user)).toList
-  }
+  def find(): List[User] = from(System.users)(user => select(user)).toList
   def insert(user: User) = {
     System.users.insert(user)
   }
@@ -37,11 +37,9 @@ object User {
     System.users.delete(user.id)
   }
   def update(user: User): Unit = {
-    System.users.update(user)
+    System.users.update(user) 
   }
-  def findById(id: Long): User = {
-    from(System.users)(s => where(s.id === id) select (s)).single
-  }
+  def findById(id: Long): User = from(System.users)(s => where(s.id === id) select (s)).single
 }
 
 object Address {

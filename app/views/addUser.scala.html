@@ -1,0 +1,26 @@
+@(userForm:Form[User])
+@import helper._
+    @form(action=routes.Application.addUser) {
+      <div>
+          <fieldset>
+             <legend>基本信息</legend>
+              @inputText(userForm("name"))
+              @inputText(userForm("username"))
+              @inputText(userForm("password"))
+              @inputText(userForm("email"))
+          </fieldset>
+      </div>
+<hr>
+      <div>
+          <fieldset>
+              <legend>地址信息</legend>
+              @inputText(userForm("address.province"))
+              @inputText(userForm("address.city"))
+              @inputText(userForm("address.country"))
+              @inputText(userForm("address.street"))
+              @inputText(userForm("address.road"))
+              @inputText(userForm("address.No"))
+          </fieldset>
+      </div>
+      <input type="submit" value="Add User">
+}

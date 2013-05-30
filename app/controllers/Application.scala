@@ -524,12 +524,12 @@ object Application extends Controller {
     Ok(Json.generate(barList))
   }
   //缓存数据对象使用默认值
-  def userList = Action {
-    val user: User = Cache.getOrElse("user") {
-      User.findById(1l)
-    }
-  }
-//缓存对象的删除
+  //  def userList = Action {
+  //    val user: User = Cache.getOrElse("user") {
+  //      User.findById(1l)
+  //    }
+  //  }
+  //缓存对象的删除
   def removeCacheUser = Action {
     try {
       Cache.remove("user")
@@ -539,7 +539,7 @@ object Application extends Controller {
     }
     Ok("清楚用户缓存")
   }
-  
+
   //缓存一个http 响应
   def cacheIndex = Cached("homePage") {
     Action {
@@ -547,13 +547,70 @@ object Application extends Controller {
     }
   }
   //响应调用前的时候调用缓存
-//  import play.mvc._
-//  def userProfile = Authenticated {
-//    user =>
-//      Cached(req=>"profile"+user) {
-//        Action {
-//          Ok(views.html.profile(User.find(user)))
-//        }
-//      }
-//  }
+  //  import play.mvc._
+  //  def userProfile = Authenticated {
+  //    user =>
+  //      Cached(req=>"profile"+user) {
+  //        Action {
+  //          Ok(views.html.profile(User.find(user)))
+  //        }
+  //      }
+  //  }
+
+  val userForm = Form(
+    mapping(
+      "name" -> nonEmptyText,
+      "username" -> nonEmptyText,
+      "password" -> nonEmptyText,
+      "email" -> optional(text),
+      "address" -> mapping(
+        "province" -> nonEmptyText,
+        "city" -> nonEmptyText,
+        "country" -> nonEmptyText,
+        "street" -> optional(text),
+        "road" -> optional(text),
+        "No" -> optional(text)
+      )((province, city, country, street, road, No) => Address(
+          province = province,
+          city = city,
+          country = country,
+          street = street,
+          road = road,
+          No = No,
+          id = 0l))((address) => Some(
+          address.province,
+          address.city,
+          address.country,
+          address.street,
+          address.road,
+          address.No))
+    )(
+        (name, username, password, email, address) => {
+          val user = User(name = name, username = username, password = password, email = email, addressId = 0l, id = 0l)
+          user.uAddress=address
+          user
+        }
+
+      )(
+          (user:User) =>
+            Some(user.name, user.username, user.password, user.email,user.uAddress)
+        )
+
+  )
+  def addUser = TxAction {
+    implicit request =>
+    	userForm.bindFromRequest.fold(error=>BadRequest, {
+    	  (user:User) =>
+    	    {
+    	      val address = Address.insert(user.uAddress)
+    	      val uuser = User(id=0,name=user.name,username=user.username,password=user.password,email=user.email,addressId=address.id)
+    	      User.insert(uuser)
+    	      Ok("user is added")
+    	    }
+    	})
+  }
+  
+  def toAddUser=Action{
+    Ok(views.html.addUser(userForm))
+  }
 }
