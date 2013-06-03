@@ -1,26 +1,38 @@
-@(userForm:Form[User])
+@(userForm:Form[User],addressForm:Form[Address])
 @import helper._
-    @form(action=routes.Application.addUser) {
-      <div>
+@import helper.twitterBootstrap._
+
+
+@main("Add User") {
+    <style>
+      .add_dialog {
+        width:500px;
+      }
+    </style>
+      @form(action=routes.Application.addUser) {
+      <div class="add_dialog">
           <fieldset>
-             <legend>基本信息</legend>
-              @inputText(userForm("name"))
-              @inputText(userForm("username"))
-              @inputText(userForm("password"))
-              @inputText(userForm("email"))
+             <legend>@{val basicMsg="基本信息";basicMsg}</legend>
+              @inputText(userForm("name"),args='_label->"姓名")
+              @inputText(userForm("username"),args='_label->"用户名")
+              @inputText(userForm("password"),args='_label->"密码")
+              @inputText(userForm("email"),args='_label->"邮箱")
           </fieldset>
       </div>
-<hr>
-      <div>
+<hr> 
+      <div class="add_dialog">
           <fieldset>
               <legend>地址信息</legend>
-              @inputText(userForm("address.province"))
-              @inputText(userForm("address.city"))
-              @inputText(userForm("address.country"))
-              @inputText(userForm("address.street"))
-              @inputText(userForm("address.road"))
-              @inputText(userForm("address.No"))
+              @inputText(addressForm("province"),args='_label->"省")
+              @inputText(addressForm("city"),args='_label->"市")
+              @inputText(addressForm("country"),args='_label->"县")
+              @inputText(addressForm("street"),args='_label->"街区")
+              @inputText(addressForm("road"),args='_label->"路")
+              @inputText(addressForm("No"),args='_label->"号")
           </fieldset>
       </div>
+      
       <input type="submit" value="Add User">
+}
+  
 }

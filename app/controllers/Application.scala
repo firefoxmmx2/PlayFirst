@@ -15,7 +15,7 @@ import play.api.templates.Html
 import play.Logger
 import play.api.cache._
 object Application extends Controller {
-
+ 
   def index = Action {
     implicit request =>
       request.session.get("connected").map(user =>
@@ -83,7 +83,6 @@ object Application extends Controller {
 
     //    Ok.stream(dataContent)
     Ok.stream(Enumerator("kiki", "foo", "bar").andThen(Enumerator.eof))
-
   }
 
   /**
@@ -99,7 +98,7 @@ object Application extends Controller {
   }
 
   val toCometMessage = Enumeratee.map[String] { data =>
-    Html("""<script>console.log('"""" + data + """')</script>""")
+    Html("""<script>console.log('""" + data + """')</script>""")
   }
 
   def cometMessage = Action {
@@ -316,7 +315,6 @@ object Application extends Controller {
   }
 
   case class SearchResult[T](elements: List[T], page: Int, pageSize: Int, total: Int)
-  import play.api.libs.functional.syntax._
   implicit val searchResultWrite: Writes[SearchResult[String]] = (
     (__ \ "elements").write[List[String]] and
     (__ \ "page").write[Int] and
@@ -562,55 +560,96 @@ object Application extends Controller {
       "name" -> nonEmptyText,
       "username" -> nonEmptyText,
       "password" -> nonEmptyText,
-      "email" -> optional(text),
-      "address" -> mapping(
-        "province" -> nonEmptyText,
-        "city" -> nonEmptyText,
-        "country" -> nonEmptyText,
-        "street" -> optional(text),
-        "road" -> optional(text),
-        "No" -> optional(text)
-      )((province, city, country, street, road, No) => Address(
-          province = province,
-          city = city,
-          country = country,
-          street = street,
-          road = road,
-          No = No,
-          id = 0l))((address) => Some(
-          address.province,
-          address.city,
-          address.country,
-          address.street,
-          address.road,
-          address.No))
-    )(
-        (name, username, password, email, address) => {
-          val user = User(name = name, username = username, password = password, email = email, addressId = 0l, id = 0l)
-          user.uAddress=address
-          user
-        }
-
-      )(
-          (user:User) =>
-            Some(user.name, user.username, user.password, user.email,user.uAddress)
-        )
-
+      "email" -> optional(text)
+    )((name, username, password, email) => {
+        val user = User(name = name, username = username, password = password, email = email, addressId = 0l, id = 0l)
+        user
+      })((user: User) =>
+        Some(user.name, user.username, user.password, user.email))
+  )
+  val addUserAddressForm = Form(
+    mapping(
+      "province" -> nonEmptyText,
+      "city" -> nonEmptyText,
+      "country" -> nonEmptyText,
+      "street" -> optional(text),
+      "road" -> optional(text),
+      "No" -> optional(text)
+    )((province, city, country, street, road, No) => Address(
+        province = province,
+        city = city,
+        country = country,
+        street = street,
+        road = road,
+        No = No,
+        id = 0l))((address) => Some(
+        address.province,
+        address.city,
+        address.country,
+        address.street,
+        address.road,
+        address.No))
   )
   def addUser = TxAction {
     implicit request =>
-    	userForm.bindFromRequest.fold(error=>BadRequest, {
-    	  (user:User) =>
-    	    {
-    	      val address = Address.insert(user.uAddress)
-    	      val uuser = User(id=0,name=user.name,username=user.username,password=user.password,email=user.email,addressId=address.id)
-    	      User.insert(uuser)
-    	      Ok("user is added")
-    	    }
-    	})
+      addUserAddressForm.bindFromRequest.fold(errors => BadRequest, {
+        case (address) =>
+          val iAddress = Address.insert(address)
+          userForm.bindFromRequest.fold(errors2 => BadRequest, {
+            case (user: User) =>
+              user.addressId = iAddress.id
+              val insertedUser = User.insert(user)
+              Redirect(routes.Application.userlist)
+          })
+
+      })
+
   }
+
+  def toAddUser = Action {
+    Ok(views.html.addUser(userForm, addUserAddressForm))
+  }
+
   
-  def toAddUser=Action{
-    Ok(views.html.addUser(userForm))
+//  implicit val userFormat = (
+//    (__ \ "id").format[Long] ~
+//    (__ \ "name").format[String] ~
+//    (__ \ "username").format[String] ~
+//    (__ \ "password").format[String] ~
+//    (__ \ "email").format[Option[String]] ~
+//    (__ \ "addressId").format[Long] 
+//  )(User.apply, unlift(User.unapply))
+//
+//  implicit val addressFormat = (
+//    (__ \ "id").format[Long] ~
+//    (__ \ "province").format[String] ~
+//    (__ \ "city").format[String] ~
+//    (__ \ "country").format[String] ~
+//    (__ \ "street").format[Option[String]] ~
+//    (__ \ "road").format[Option[String]] ~
+//    (__ \ "No").format[Option[String]]
+//  )(Address.apply, unlift(Address.unapply))
+  
+//  implicit val addressFmt=play.api.libs.json.Json.format[Address]
+//  implicit val userFmt=play.api.libs.json.Json.format[User]
+  implicit val userWrite = play.api.libs.json.Json.writes[User]
+  def userlist = TxAction {
+    import play.api.libs.json.Json
+    val json = Json.parse("""{"id":1,"name":"firefoxmmx","username":"ffmmx","password":"1","email":"firefoxmmx@gmail.com","addressId":"1"}""")
+    Ok(Json.toJson(User.find())).as(JSON)
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

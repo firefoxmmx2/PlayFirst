@@ -66,3 +66,4 @@ GET    /booklist             controllers.Application.booklist
 POST   /book/add             controllers.Application.addBook
 POST   /user/add             controllers.Application.addUser
 GET    /addUser              controllers.Application.toAddUser
+GET    /userlist             controllers.Application.userlist
