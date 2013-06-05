@@ -1,0 +1,10 @@
+views.addUser.name=\u540d\u79f0
+views.addUser.username=\u7528\u6237\u540d
+views.addUser.password=\u5bc6\u7801
+views.addUser.email=\u90ae\u7bb1
+views.addUser.address.province=\u7701
+views.addUser.address.city=\u5e02
+views.addUser.address.country=\u53bf
+views.addUser.address.street=\u8857\u533a
+views.addUser.address.road=\u8def
+views.adduser.address.no=\u95e8\u724c\u53f7

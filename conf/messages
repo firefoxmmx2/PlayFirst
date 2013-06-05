@@ -1,0 +1,12 @@
+views.addUser.name=名称
+views.addUser.username=用户名
+views.addUser.password=密码
+views.addUser.email=邮箱
+views.addUser.address.province=省
+views.addUser.address.city=城
+views.addUser.address.country=县
+views.addUser.address.street=街区
+views.addUser.address.road=路
+views.addUser.address.no=门牌号
+views.addUser.addUserButton=添加用户
+views.addUser.title=添加用户
