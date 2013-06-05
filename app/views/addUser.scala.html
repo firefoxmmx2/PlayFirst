@@ -2,8 +2,7 @@
 @import helper._
 @import helper.twitterBootstrap._
 
-
-@main("Add User") {
+@main(Messages("views.addUser.title")) {
     <style>
       .add_dialog {
         width:500px;
@@ -13,26 +12,26 @@
       <div class="add_dialog">
           <fieldset>
              <legend>@{val basicMsg="基本信息";basicMsg}</legend>
-              @inputText(userForm("name"),args='_label->"姓名")
-              @inputText(userForm("username"),args='_label->"用户名")
-              @inputText(userForm("password"),args='_label->"密码")
-              @inputText(userForm("email"),args='_label->"邮箱")
+              @inputText(userForm("name"),args='_label->Messages("views.addUser.name"))
+              @inputText(userForm("username"),args='_label->Messages("views.addUser.username"))
+              @inputText(userForm("password"),args='_label->Messages("views.addUser.password"))
+              @inputText(userForm("email"),args='_label->Messages("views.addUser.email"))
           </fieldset>
       </div>
 <hr> 
       <div class="add_dialog">
           <fieldset>
               <legend>地址信息</legend>
-              @inputText(addressForm("province"),args='_label->"省")
-              @inputText(addressForm("city"),args='_label->"市")
-              @inputText(addressForm("country"),args='_label->"县")
-              @inputText(addressForm("street"),args='_label->"街区")
-              @inputText(addressForm("road"),args='_label->"路")
-              @inputText(addressForm("No"),args='_label->"号")
+              @inputText(addressForm("province"),args='_label->Messages("views.addUser.address.province"))
+              @inputText(addressForm("city"),args='_label->Messages("views.addUser.address.city"))
+              @inputText(addressForm("country"),args='_label->Messages("views.addUser.address.country"))
+              @inputText(addressForm("street"),args='_label->Messages("views.addUser.address.street"))
+              @inputText(addressForm("road"),args='_label->Messages("views.addUser.address.road"))
+              @inputText(addressForm("No"),args='_label->Messages("views.addUser.address.no"))
           </fieldset>
       </div>
       
-      <input type="submit" value="Add User">
+      <input type="submit" value="@Messages("views.addUser.addUserButton")">
 }
   
 }

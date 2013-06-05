@@ -14,6 +14,9 @@ import play.api.mvc._
 import play.api.templates.Html
 import play.Logger
 import play.api.cache._
+import scala.concurrent.Future
+import play.api.libs.ws._
+
 object Application extends Controller {
  
   def index = Action {
@@ -166,10 +169,10 @@ object Application extends Controller {
   }
   //废弃cookie
   def discardCookie = Action {
-    Ok("Hello World!").discardingCookies("theme")
+    Ok("Hello World!").discardingCookies(DiscardingCookie("theme"))
   }
 
-  implicit val myCustomCharset = Codec.javaSupported("iso-8859-1")
+  implicit val myCustomCharset = Codec.javaSupported("utf-8")
 
   def changeCharset = Action {
     Ok(<h1>Hello World!</h1>).as(HTML)
@@ -611,15 +614,6 @@ object Application extends Controller {
   }
 
   
-//  implicit val userFormat = (
-//    (__ \ "id").format[Long] ~
-//    (__ \ "name").format[String] ~
-//    (__ \ "username").format[String] ~
-//    (__ \ "password").format[String] ~
-//    (__ \ "email").format[Option[String]] ~
-//    (__ \ "addressId").format[Long] 
-//  )(User.apply, unlift(User.unapply))
-//
 //  implicit val addressFormat = (
 //    (__ \ "id").format[Long] ~
 //    (__ \ "province").format[String] ~
@@ -629,15 +623,42 @@ object Application extends Controller {
 //    (__ \ "road").format[Option[String]] ~
 //    (__ \ "No").format[Option[String]]
 //  )(Address.apply, unlift(Address.unapply))
+//  
+//  implicit val userFormat = (
+//    (__ \ "id").format[Long] ~
+//    (__ \ "name").format[String] ~
+//    (__ \ "username").format[String] ~
+//    (__ \ "password").format[String] ~
+//    (__ \ "email").format[Option[String]] ~
+//    (__ \ "addressId").format[Long]
+//  )(User.apply, unlift(User.unapply))
+
+  
   
 //  implicit val addressFmt=play.api.libs.json.Json.format[Address]
 //  implicit val userFmt=play.api.libs.json.Json.format[User]
-  implicit val userWrite = play.api.libs.json.Json.writes[User]
+//  implicit val userWrite = play.api.libs.json.Json.writes[User]
   def userlist = TxAction {
-    import play.api.libs.json.Json
-    val json = Json.parse("""{"id":1,"name":"firefoxmmx","username":"ffmmx","password":"1","email":"firefoxmmx@gmail.com","addressId":"1"}""")
-    Ok(Json.toJson(User.find())).as(JSON)
+    val user = User.find()
+    Ok(Json.generate(user)).as(JSON)
   }
+
+
+  //future and ws
+  // making an http call
+  val result:Future[ws.Response]={
+    WS.url("http://localhost:9000/post").post("content")
+  }
+
+  //retrieving the http response result
+//  def feedTitle(feedUrl:String) = Action {
+//    Async {
+//      WS.url(feedUrl).get().map {
+//        implicit response=>
+//          Ok("Feed title: "+(response.json \ "title").as[String])
+//      }
+//    }
+//  }
 }
 
 

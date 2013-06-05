@@ -4,6 +4,7 @@ import org.squeryl.{ Session, SessionFactory }
 import play.api.db._
 
 object Global extends GlobalSettings {
+
   override def onStart(app: Application) {
     implicit val _app = app
     Logger.info("Initializing squeryl session factory")
