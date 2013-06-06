@@ -5,37 +5,37 @@ import org.squeryl.PrimitiveTypeMode._
 import org.squeryl.dsl._
 import play.api.Play.current
 
-class Address(val id: Long,
-              val province: String,
-              val city: String,
-              val country: String,
-              var street: Option[String],
-              var road: Option[String],
-              var No: Option[String]) extends KeyedEntity[Long] {
+case class Address(val id: Long,
+                   val province: String,
+                   val city: String,
+                   val country: String,
+                   var street: Option[String],
+                   var road: Option[String],
+                   var No: Option[String]) extends KeyedEntity[Long] {
 }
 
-class User(val id: Long,
-           val name: String,
-           val username: String,
-           val password: String,
-           var email: Option[String],
-           var addressId: Long) extends KeyedEntity[Long] {
+case class User(val id: Long,
+                val name: String,
+                val username: String,
+                val password: String,
+                var email: Option[String],
+                var addressId: Long) extends KeyedEntity[Long] {
   lazy val address: ManyToOne[Address] = System.addressToUsers.right(this)
 }
 
 object User {
-  def apply(id: Long = 0,
-            name: String = "",
-            username: String,
-            password: String,
-            email: Option[String] = Option(""),
-            addressId: Long = 0) =
-    new User(id = id,
-      name = name,
-      username = username,
-      password = password,
-      email = email,
-      addressId = addressId)
+  //  def apply(id: Long = 0,
+  //            name: String = "",
+  //            username: String,
+  //            password: String,
+  //            email: Option[String] = Option(""),
+  //            addressId: Long = 0) =
+  //    new User(id = id,
+  //      name = name,
+  //      username = username,
+  //      password = password,
+  //      email = email,
+  //      addressId = addressId)
 
   //  def apply(id: Long = 0,
   //            name: String = "",
@@ -51,21 +51,21 @@ object User {
   //      email = email,
   //      addressId = addressId)
   //  }
-  def unapply(user: User) =
-    //  if (user.address != null || user.address != None) Some(user.id,
-    //    user.name,
-    //    user.username,
-    //    user.password,
-    //    user.email,
-    //    user.addressId,
-    //    user.address)
-    //  else
-    Some(user.id,
-      user.name,
-      user.username,
-      user.password,
-      user.email,
-      user.addressId)
+  //  def unapply(user: User) =
+  //    //  if (user.address != null || user.address != None) Some(user.id,
+  //    //    user.name,
+  //    //    user.username,
+  //    //    user.password,
+  //    //    user.email,
+  //    //    user.addressId,
+  //    //    user.address)
+  //    //  else
+  //    Some(user.id,
+  //      user.name,
+  //      user.username,
+  //      user.password,
+  //      user.email,
+  //      user.addressId)
 
   //  def apply(id: Long = 0,
   //            name: String = "",
@@ -99,28 +99,28 @@ object User {
 }
 
 object Address {
-  def apply(id: Long = 0,
-            province: String = "",
-            city: String = "",
-            country: String = "",
-            street: Option[String] = Option(""),
-            road: Option[String] = Option(""),
-            No: Option[String] = Option("")) =
-    new Address(id = id,
-      province = province,
-      city = city,
-      country = country,
-      street = street,
-      road = road,
-      No = No)
-
-  def unapply(address: Address) = Some(address.id,
-    address.province,
-    address.city,
-    address.country,
-    address.street,
-    address.road,
-    address.No)
+  //  def apply(id: Long = 0,
+  //            province: String = "",
+  //            city: String = "",
+  //            country: String = "",
+  //            street: Option[String] = Option(""),
+  //            road: Option[String] = Option(""),
+  //            No: Option[String] = Option("")) =
+  //    new Address(id = id,
+  //      province = province,
+  //      city = city,
+  //      country = country,
+  //      street = street,
+  //      road = road,
+  //      No = No)
+  //
+  //  def unapply(address: Address) = Some(address.id,
+  //    address.province,
+  //    address.city,
+  //    address.country,
+  //    address.street,
+  //    address.road,
+  //    address.No)
 
   def get(id: Long): Address = System.addresses.get(id)
 
