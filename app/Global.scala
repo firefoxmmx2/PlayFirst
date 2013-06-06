@@ -2,8 +2,12 @@ import play.api._
 import org.squeryl.adapters.H2Adapter
 import org.squeryl.{ Session, SessionFactory }
 import play.api.db._
+import play.api.mvc.WithFilters
+import play.api.mvc.Filter
+import play.api.mvc.RequestHeader
+import play.api.mvc.Result
 
-object Global extends GlobalSettings {
+object Global extends WithFilters(AccessLog){
 
   override def onStart(app: Application) {
     implicit val _app = app
@@ -15,5 +19,13 @@ object Global extends GlobalSettings {
 
   override def onStop(app: Application) {
     Logger.info("Application has stoped")
+  }
+}
+
+object AccessLog extends Filter{
+  override def apply(next:RequestHeader=>Result)(req:RequestHeader):Result = {
+    val result=next(req)
+    play.Logger.info(req+"\n\t => "+result)
+    result
   }
 }

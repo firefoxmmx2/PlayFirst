@@ -37,27 +37,49 @@ object User {
       email = email,
       addressId = addressId)
 
-  def unapply(user: User) = Some(user.id,
-    user.name,
-    user.username,
-    user.password,
-    user.email,
-    user.addressId)
+  //  def apply(id: Long = 0,
+  //            name: String = "",
+  //            username: String = "",
+  //            password: String = "",
+  //            email: Option[String] = Option(""),
+  //            addressId: Long = 0,
+  //            address: Address) = {
+  //    new User(id = id,
+  //      name = name,
+  //      username = username,
+  //      password = password,
+  //      email = email,
+  //      addressId = addressId)
+  //  }
+  def unapply(user: User) =
+    //  if (user.address != null || user.address != None) Some(user.id,
+    //    user.name,
+    //    user.username,
+    //    user.password,
+    //    user.email,
+    //    user.addressId,
+    //    user.address)
+    //  else
+    Some(user.id,
+      user.name,
+      user.username,
+      user.password,
+      user.email,
+      user.addressId)
 
-//  def apply(id: Long = 0,
-//            name: String = "",
-//            username: String = "",
-//            password: String = "",
-//            email: Option[String] = Option(""),
-//            address: Address=Address()) =   {
-//    new User(id = id,
-//      name = name,
-//      username = username,
-//      password = password,
-//      email = email,
-//      addressId = address.id)
-//  }
-
+  //  def apply(id: Long = 0,
+  //            name: String = "",
+  //            username: String = "",
+  //            password: String = "",
+  //            email: Option[String] = Option(""),
+  //            address: Address=Address()) =   {
+  //    new User(id = id,
+  //      name = name,
+  //      username = username,
+  //      password = password,
+  //      email = email,
+  //      addressId = address.id)
+  //  }
 
   def find() = from(System.users)(user => select(user)).toList
 
@@ -78,9 +100,9 @@ object User {
 
 object Address {
   def apply(id: Long = 0,
-            province: String="",
-            city: String="",
-            country: String="",
+            province: String = "",
+            city: String = "",
+            country: String = "",
             street: Option[String] = Option(""),
             road: Option[String] = Option(""),
             No: Option[String] = Option("")) =

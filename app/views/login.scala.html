@@ -1,0 +1,9 @@
+@* login Template File *@
+@()
+
+@main("OpenID登录实例") {
+  @helper.form(routes.Application.login) {
+    <input type="text" name="openid">
+    <input type="submit" value="登录">
+  }  
+}

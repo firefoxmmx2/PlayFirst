@@ -67,3 +67,6 @@ POST   /book/add             controllers.Application.addBook
 POST   /user/add             controllers.Application.addUser
 GET    /addUser              controllers.Application.toAddUser
 GET    /userlist             controllers.Application.userlist
+GET    /login                controllers.Application.toLogin
+POST   /login                controllers.Application.login
+#POST   /openIDCallback       controllers.Application.openIDCallback

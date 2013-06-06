@@ -16,9 +16,11 @@ import play.Logger
 import play.api.cache._
 import scala.concurrent.Future
 import play.api.libs.ws._
+import play.api.libs.openid.OpenID
+import play.api.libs.concurrent.Redeemed
 
 object Application extends Controller {
- 
+
   def index = Action {
     implicit request =>
       request.session.get("connected").map(user =>
@@ -613,64 +615,94 @@ object Application extends Controller {
     Ok(views.html.addUser(userForm, addUserAddressForm))
   }
 
-  
-//  implicit val addressFormat = (
-//    (__ \ "id").format[Long] ~
-//    (__ \ "province").format[String] ~
-//    (__ \ "city").format[String] ~
-//    (__ \ "country").format[String] ~
-//    (__ \ "street").format[Option[String]] ~
-//    (__ \ "road").format[Option[String]] ~
-//    (__ \ "No").format[Option[String]]
-//  )(Address.apply, unlift(Address.unapply))
-//  
-//  implicit val userFormat = (
-//    (__ \ "id").format[Long] ~
-//    (__ \ "name").format[String] ~
-//    (__ \ "username").format[String] ~
-//    (__ \ "password").format[String] ~
-//    (__ \ "email").format[Option[String]] ~
-//    (__ \ "addressId").format[Long]
-//  )(User.apply, unlift(User.unapply))
+  implicit val addressFormat = (
+    (__ \ "id").format[Long] ~
+    (__ \ "province").format[String] ~
+    (__ \ "city").format[String] ~
+    (__ \ "country").format[String] ~
+    (__ \ "street").format[Option[String]] ~
+    (__ \ "road").format[Option[String]] ~
+    (__ \ "No").format[Option[String]]
+  )(Address.apply, unlift(Address.unapply))
+  //  
+  //    implicit val userFormat = (
+  //      (__ \ "id").format[Long] ~
+  //      (__ \ "name").format[String] ~
+  //      (__ \ "username").format[String] ~
+  //      (__ \ "password").format[String] ~
+  //      (__ \ "email").format[Option[String]] ~
+  //      (__ \ "addressId").format[Long]
+  //    )(User.apply, unlift(User.unapply))
 
-  
-  
-//  implicit val addressFmt=play.api.libs.json.Json.format[Address]
-//  implicit val userFmt=play.api.libs.json.Json.format[User]
-//  implicit val userWrite = play.api.libs.json.Json.writes[User]
+  //  implicit val addressFmt=play.api.libs.json.Json.format[Address]
+  //  implicit val userFmt=play.api.libs.json.Json.format[User]
+  //  implicit val userWrite = (
+  //    (__ \ "id").write[Long] ~
+  //    (__ \ "name").write[String] ~
+  //    (__ \ "username").write[String] ~
+  //    (__ \ "password").write[String] ~
+  //    (__ \ "email").write[Option[String]] ~
+  //    (__ \ "addressId").write[Long]
+  //  )(User)
   def userlist = TxAction {
     val user = User.find()
-    Ok(Json.generate(user)).as(JSON)
+    //    import org.json4s._
+    //    import org.json4s.JsonDSL._
+    //    import org.json4s.jackson.JsonMethods._
+    //    val json = ("id"->user)
+    //    println(compact(render(List(user))))
+    Ok(Json.generate[List[User]](user)).as(JSON)
+    //    import play.api.libs.json.Json
+    //    Ok(Json.toJson(user)(userWrite)).as(JSON)
   }
-
 
   //future and ws
   // making an http call
-  val result:Future[ws.Response]={
+  val result: Future[ws.Response] = {
     WS.url("http://localhost:9000/post").post("content")
   }
 
   //retrieving the http response result
-//  def feedTitle(feedUrl:String) = Action {
-//    Async {
-//      WS.url(feedUrl).get().map {
-//        implicit response=>
-//          Ok("Feed title: "+(response.json \ "title").as[String])
-//      }
-//    }
-//  }
+  //  def feedTitle(feedUrl:String) = Action {
+  //    Async {
+  //      WS.url(feedUrl).get().map {
+  //        implicit response=>
+  //          Ok("Feed title: "+(response.json \ "title").as[String])
+  //      }
+  //    }
+  //  }
+
+  //  openID demo
+  def toLogin = Action {
+    Ok(views.html.login())
+  }
+
+  def login = Action {
+    implicit req =>
+      Form(single("openid" -> nonEmptyText)).bindFromRequest.fold(
+        error => {
+          Logger.info("bad request " + error.toString)
+          BadRequest(error.toString)
+        },
+        {
+          case (openid) =>
+            //            AsyncResult(OpenID.redirectURL(openid, 
+            //              routes.Application.openIDCallback.absoluteURL()).extend(_.value match {
+            //              case Redeemed(url) => Redirect(url)
+            //              case Thrown(t) => Redirect(routes.Application.login)
+            //            }))
+            Ok("")
+        }
+      )
+  }
+  //
+  //  def openIDCallback = Action {
+  //    implicit req =>
+  //      AsyncResult(OpenID.verifiedId.extend(_.value match {
+  //        case Redeemed(info) => Ok(info.id + "\n" + info.attributes)
+  //        case Thrown(t) => Redirect(routes.Application.login)
+  //      }))
+  //  }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
