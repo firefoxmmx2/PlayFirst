@@ -2,7 +2,6 @@ package models
 
 import org.squeryl.PrimitiveTypeMode._
 import org.squeryl._
-import org.squeryl.annotations._
 
 case class Author(id: Long = 0l,
                   firstName: String = "",
@@ -10,10 +9,10 @@ case class Author(id: Long = 0l,
                   email: Option[String] = Some("")) extends KeyedEntity[Long] {
 }
 object Author {
-  def findAll = from(Library.authors)(a => select(a)).toList
-  def insert(author:Author) = Library.authors.insert(author)
-  def update(author:Author) = Library.authors.update(author)
-  def delete(author:Author) = Library.authors.delete(author.id)
+  def findAll() = from(Library.authors)(a => select(a)).toList
+  def insert(author:Author):Author = Library.authors.insert(author)
+  def update(author:Author):Unit = Library.authors.update(author)
+  def delete(author:Author):Unit = Library.authors.delete(author.id)
 }
 case class Book(id: Long = 0l,
                 title: String = "",
@@ -23,6 +22,7 @@ case class Book(id: Long = 0l,
 }
 
 object Book {
+
   def findAll() = from(Library.books)(b => select(b)).toList
   def insert(book: Book) = Library.books.insert(book)
   def update(book: Book) = Library.books.update(book)
@@ -32,7 +32,6 @@ object Book {
 object Library extends Schema {
   val authors = table[Author]("AUTHORS")
   val books = table[Book]
-
 //  on(authors)(s => declare(
 //    s.email is (unique, indexed("idxEmailAddresses")),
 //    s.firstName is (indexed),
@@ -45,5 +44,4 @@ object Library extends Schema {
 //  ))
 
   override def printDdl: Unit = printDdl(println(_))
-
 }
