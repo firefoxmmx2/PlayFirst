@@ -7,7 +7,7 @@ object HelloWorldSpec extends Specification {
     "contain 11 characters" in {
       "Hello world" must have size (11)
     }
-    "fffffffffstart with Hello" in {
+    "start with Hello" in {
       "Hello world" must startWith("Hello")
     }
     "end with world" in {
