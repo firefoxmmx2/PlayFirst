@@ -70,3 +70,4 @@ GET    /userlist             controllers.Application.userlist
 GET    /login                controllers.Application.toLogin
 POST   /login                controllers.Application.login
 #POST   /openIDCallback       controllers.Application.openIDCallback
+GET    /coffee               controllers.Application.coffee

@@ -52,11 +52,8 @@ object Application extends Controller {
     mapping(
       "id" -> ignored(0l),
       "name" -> text,
-      "summary" -> text
-    )(
-        (id, name, summeray) => Bar(id, name, summeray)
-      )((bar: Bar) => Some(bar.id, bar.name, bar.summary))
-  )
+      "summary" -> text)(
+        (id, name, summeray) => Bar(id, name, summeray))((bar: Bar) => Some(bar.id, bar.name, bar.summary)))
 
   def addBar = Action {
     implicit request =>
@@ -65,8 +62,7 @@ object Application extends Controller {
         //简洁写法
         {
           case (bar) => Bar.create(bar); Redirect(routes.Application.bar)
-        }
-      )
+        })
   }
 
   def bar = Action {
@@ -470,14 +466,9 @@ object Application extends Controller {
       "author" -> mapping(
         "lastName" -> nonEmptyText,
         "firstName" -> nonEmptyText,
-        "email" -> optional(text)
-      )(
-          (lastName, firstName, email) => Author(firstName = firstName, lastName = lastName, email = email)
-        )(
-            (author) => Some(author.firstName, author.lastName, author.email)
-          )
-    )((title, author) => Book(title = title, author = author))((book) => Some(book.title, book.author))
-  )
+        "email" -> optional(text))(
+          (lastName, firstName, email) => Author(firstName = firstName, lastName = lastName, email = email))(
+            (author) => Some(author.firstName, author.lastName, author.email)))((title, author) => Book(title = title, author = author))((book) => Some(book.title, book.author)))
   //事物
   import org.squeryl.PrimitiveTypeMode._
   //创建一个带事物的Action Wrapper
@@ -506,8 +497,7 @@ object Application extends Controller {
             book.copy(author = author)
             Book.insert(book)
             Redirect(routes.Application.booklist)
-        }
-      )
+        })
   }
 
   def toBooks = Action {
@@ -536,8 +526,7 @@ object Application extends Controller {
   def removeCacheUser = Action {
     try {
       Cache.remove("user")
-    }
-    catch {
+    } catch {
       case t => Ok("清除用户缓存失败")
     }
     Ok("清楚用户缓存")
@@ -565,13 +554,11 @@ object Application extends Controller {
       "name" -> nonEmptyText,
       "username" -> nonEmptyText,
       "password" -> nonEmptyText,
-      "email" -> optional(text)
-    )((name, username, password, email) => {
+      "email" -> optional(text))((name, username, password, email) => {
         val user = User(name = name, username = username, password = password, email = email, addressId = 0l, id = 0l)
         user
       })((user: User) =>
-        Some(user.name, user.username, user.password, user.email))
-  )
+        Some(user.name, user.username, user.password, user.email)))
   val addUserAddressForm = Form(
     mapping(
       "province" -> nonEmptyText,
@@ -579,8 +566,7 @@ object Application extends Controller {
       "country" -> nonEmptyText,
       "street" -> optional(text),
       "road" -> optional(text),
-      "No" -> optional(text)
-    )((province, city, country, street, road, No) => Address(
+      "No" -> optional(text))((province, city, country, street, road, No) => Address(
         province = province,
         city = city,
         country = country,
@@ -593,8 +579,7 @@ object Application extends Controller {
         address.country,
         address.street,
         address.road,
-        address.No))
-  )
+        address.No)))
   def addUser = TxAction {
     implicit request =>
       addUserAddressForm.bindFromRequest.fold(errors => BadRequest, {
@@ -622,8 +607,7 @@ object Application extends Controller {
     (__ \ "country").format[String] ~
     (__ \ "street").format[Option[String]] ~
     (__ \ "road").format[Option[String]] ~
-    (__ \ "No").format[Option[String]]
-  )(Address.apply, unlift(Address.unapply))
+    (__ \ "No").format[Option[String]])(Address.apply, unlift(Address.unapply))
   //  
   //    implicit val userFormat = (
   //      (__ \ "id").format[Long] ~
@@ -692,8 +676,7 @@ object Application extends Controller {
             //              case Thrown(t) => Redirect(routes.Application.login)
             //            }))
             Ok("")
-        }
-      )
+        })
   }
   //
   //  def openIDCallback = Action {
@@ -704,5 +687,12 @@ object Application extends Controller {
   //      }))
   //  }
 
+  /**
+   * coffee 测试
+   * @return
+   */
+  def coffee() = Action {
+    Ok(views.html.coffee())
+  }
 }
 
