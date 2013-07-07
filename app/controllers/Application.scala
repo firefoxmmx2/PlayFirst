@@ -701,5 +701,9 @@ object Application extends Controller {
   def coffeeMixins() = Action {
     Ok(views.html.coffeeMixins())
   }
+
+  def coffeeControl() = Action {
+    Ok(views.html.coffeeControl())
+  }
 }
 

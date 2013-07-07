@@ -72,3 +72,4 @@ POST   /login                controllers.Application.login
 #POST   /openIDCallback       controllers.Application.openIDCallback
 GET    /coffee               controllers.Application.coffee
 GET    /coffeeMixins         controllers.Application.coffeeMixins
+GET    /coffeeControl        controllers.Application.coffeeControl
