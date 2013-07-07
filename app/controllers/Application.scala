@@ -28,7 +28,6 @@ object Application extends Controller {
         Unauthorized("Oops, you are not connected")
       }
   }
-
   val taskForm = Form("label" -> nonEmptyText)
   def tasks = Action {
     Ok(views.html.task(Task.all, taskForm))
@@ -42,7 +41,6 @@ object Application extends Controller {
           Redirect(routes.Application.tasks)
       })
   }
-
   def deleteTask(id: Long) = Action {
     Task.delete(id)
     Redirect(routes.Application.tasks)
@@ -316,6 +314,7 @@ object Application extends Controller {
   }
 
   case class SearchResult[T](elements: List[T], page: Int, pageSize: Int, total: Int)
+
   implicit val searchResultWrite: Writes[SearchResult[String]] = (
     (__ \ "elements").write[List[String]] and
     (__ \ "page").write[Int] and
@@ -526,7 +525,8 @@ object Application extends Controller {
   def removeCacheUser = Action {
     try {
       Cache.remove("user")
-    } catch {
+    }
+    catch {
       case t => Ok("清除用户缓存失败")
     }
     Ok("清楚用户缓存")
@@ -693,6 +693,13 @@ object Application extends Controller {
    */
   def coffee() = Action {
     Ok(views.html.coffee())
+  }
+
+  /**
+   * coffeeMixins
+   */
+  def coffeeMixins() = Action {
+    Ok(views.html.coffeeMixins())
   }
 }
 
