@@ -32,16 +32,5 @@ object Book {
 object Library extends Schema {
   val authors = table[Author]("AUTHORS")
   val books = table[Book]
-//  on(authors)(s => declare(
-//    s.email is (unique, indexed("idxEmailAddresses")),
-//    s.firstName is (indexed),
-//    s.lastName is (indexed, dbType("varchar(255)")),
-//    columns(s.firstName, s.lastName) are (indexed)
-//  ))
-
-//  on(books)(b => declare(
-////    columns(b.author.id, b.coAuthor.get.id) are (indexed)
-//  ))
-
   override def printDdl: Unit = printDdl(println(_))
 }
