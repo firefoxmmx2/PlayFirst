@@ -705,5 +705,18 @@ object Application extends Controller {
   def coffeeControl() = Action {
     Ok(views.html.coffeeControl())
   }
+
+  /**
+   * akka actor库测试 
+    */
+  def akka() = Action {
+    Ok(views.html.akka())
+  }
+
+  def doAkkaTest = Action {
+
+    //返回之前的页面
+    Ok(views.html.akka())
+  }
 }
 

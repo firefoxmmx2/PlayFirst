@@ -73,3 +73,6 @@ POST   /login                controllers.Application.login
 GET    /coffee               controllers.Application.coffee
 GET    /coffeeMixins         controllers.Application.coffeeMixins
 GET    /coffeeControl        controllers.Application.coffeeControl
+#akka测试
+GET		/akkat	controllers.Application.akka
+POST	/akka	controllers.Application.doAkkaTest
