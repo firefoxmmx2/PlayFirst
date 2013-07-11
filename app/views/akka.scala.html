@@ -1,6 +1,13 @@
-#akka 线程库测试页面
-@()
+@(result:String)
+
+@import helper._
 
 @main("akka actor lib test") {
-	
+	@form(routes.Application.akka) {
+		<input type="submit" name="akkatest" value="akka测试">
+	}
+
+	<div id="wind">
+
+	</div>
 }

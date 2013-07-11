@@ -17,8 +17,8 @@ import play.api.cache._
 import scala.concurrent.Future
 import play.api.libs.ws._
 import play.api.libs.openid.OpenID
-import play.api.libs.concurrent.Redeemed
-
+import play.api.libs.concurrent._
+import akka.actor._
 object Application extends Controller {
 
   def index = Action {
@@ -566,7 +566,7 @@ object Application extends Controller {
       "country" -> nonEmptyText,
       "street" -> optional(text),
       "road" -> optional(text),
-      "No" -> optional(text))((province, city, country, street, road, No) => Address(
+      "No" -> optional(text))((province, city, country, street, road, No) => models.Address(
         province = province,
         city = city,
         country = country,
@@ -584,7 +584,7 @@ object Application extends Controller {
     implicit request =>
       addUserAddressForm.bindFromRequest.fold(errors => BadRequest, {
         case (address) =>
-          val iAddress = Address.insert(address)
+          val iAddress = models.Address.insert(address)
           userForm.bindFromRequest.fold(errors2 => BadRequest, {
             case (user: User) =>
               user.addressId = iAddress.id
@@ -607,7 +607,7 @@ object Application extends Controller {
     (__ \ "country").format[String] ~
     (__ \ "street").format[Option[String]] ~
     (__ \ "road").format[Option[String]] ~
-    (__ \ "No").format[Option[String]])(Address.apply, unlift(Address.unapply))
+    (__ \ "No").format[Option[String]])(models.Address.apply, unlift(models.Address.unapply))
   //  
   //    implicit val userFormat = (
   //      (__ \ "id").format[Long] ~
@@ -710,13 +710,21 @@ object Application extends Controller {
    * akka actor库测试 
     */
   def akka() = Action {
-    Ok(views.html.akka())
+    Ok(views.html.akka(""))
   }
 
+  class MyActor extends Actor {
+    def receive = {
+      case "test" => println("this is test message")
+      case x:Any  => { 
+        println("this is other message")
+      }
+    }
+  }
   def doAkkaTest = Action {
-
+    val myActor = Akka.system.actorOf(Props[MyActor], name="myactor")
     //返回之前的页面
-    Ok(views.html.akka())
+    Ok(views.html.akka(""))
   }
 }
 

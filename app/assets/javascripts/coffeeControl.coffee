@@ -34,3 +34,14 @@ $ ->
 	console.log "a is '#{a}', b is '#{b}'"
 	{join,resolve} = reqire("path")
 	join('/Users','Alex')
+	#coffee 私有变量
+	#Execute function immediately
+	type = do ->
+		classToType = {}
+		for name in "Boolean Number String Function Array Date RegExp Underfined Null".split(" ")
+			classToType["[object "+ name +"]"] = name.toLowerCase()
+	#Return a function
+		(obj) ->
+			strType = Object::toString.call(obj)
+			classToType[strType] or "object"
+	
