@@ -715,16 +715,16 @@ object Application extends Controller {
 
   class MyActor extends Actor {
     def receive = {
-      case "test" => println("this is test message")
-      case x:Any  => { 
+      case _  => { 
         println("this is other message")
       }
     }
   }
-  def doAkkaTest = Action {
+  def doAkka = Action {
     val myActor = Akka.system.actorOf(Props[MyActor], name="myactor")
+    myActor ! "Hello"
     //返回之前的页面
-    Ok(views.html.akka(""))
+    Redirect(routes.Application.akka) 
   }
 }
 
