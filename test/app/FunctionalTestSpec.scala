@@ -41,14 +41,14 @@ object FunctionalTestSpec extends Specification {
       //      await(WS.url("http://localhost:"+port).get).status must equalTo(OK)
     }
 
-    "run in a browser" in new WithBrowser {
-      browser.goTo("/")
-      //      browser.$("#title").getTexts().get(0) must equalTo("ffmmx")
-      //      browser.$("a").click()
-      //      browser.url must equalTo("/")
-      browser.$("pre").getTexts().get(0) must equalTo("Oops, you are not connected")
+    /*"run in a browser" in new WithBrowser {*/
+      //browser.goTo("/")
+      ////      browser.$("#title").getTexts().get(0) must equalTo("ffmmx")
+      ////      browser.$("a").click()
+      ////      browser.url must equalTo("/")
+      //browser.$("pre").getTexts().get(0) must equalTo("Oops, you are not connected")
 
-    }
+    /*}*/
 
   }
 }
