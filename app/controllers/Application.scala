@@ -715,8 +715,8 @@ object Application extends Controller {
 
   class MyActor extends Actor {
     def receive = {
-      case _  => { 
-        println("this is other message")
+      case s:String  => {
+        Logger.info(" say "+ s)
       }
     }
   }

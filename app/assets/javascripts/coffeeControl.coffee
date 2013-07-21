@@ -44,4 +44,8 @@ $ ->
 		(obj) ->
 			strType = Object::toString.call(obj)
 			classToType[strType] or "object"
+	#自动编译coffeescript
+	
+	#cafe
+	
 	
