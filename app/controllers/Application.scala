@@ -735,44 +735,45 @@ object Application extends Controller {
 	 * @return
 	 */
 	def addDruid = Action {
-    implicit request =>
-    druidForm.bindFromRequest.fold(error => BadRequest, 
-      success => {
-        case (druid) => Druid.create(druid)
-        Ok(routes.Application.druid)
-      }
-    )
-  }
+		implicit request =>
+			druidForm.bindFromRequest.fold(error => Redirect(routes.Application.druid),
+				{
+					case (druid) =>
+						Druid.create(druid)
+						Redirect(routes.Application.druid)
+				})
+	}
 
 	/**
 	 * 修改德鲁伊
 	 * @return
 	 */
 	def updateDruid = Action {
-    implicit request =>
-      druidForm.bindFromRequest.fold(errors => BadRequest, {
-          case (druid) => Druid.update(druid)
-          Ok(routes.Application.druid)
-        })
-  }
+		implicit request =>
+			druidForm.bindFromRequest.fold(errors => BadRequest, {
+				case (druid) =>
+					Druid.update(druid)
+					Redirect(routes.Application.druid)
+			})
+	}
 
 	/**
 	 * 删除一个德鲁伊
 	 * @return
 	 */
-	def deleteDruid(id:Long) = Action {
-    val druid = Druid(id,"")
-    Druid.delete(druid)
-    Ok(routes.Application.druid)
-  }
+	def deleteDruid(id: Long) = Action {
+		val druid = Druid(id, "")
+		Druid.delete(druid)
+		Redirect(routes.Application.druid)
+	}
 
 	val druidForm = Form(
 		mapping(
 			"id" -> ignored(0l),
 			"name" -> nonEmptyText)(Druid.apply)(Druid.unapply))
-  /**
-    查询所有德鲁伊
-  */
+	/**
+	 * 查询所有德鲁伊
+	 */
 	def druid = Action {
 		val druidList: List[Druid] = Druid.all()
 		Ok(views.html.druid(druidList.size, druidList, druidForm))
