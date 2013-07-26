@@ -1,2 +1,25 @@
 @* druid Template File *@
-@(param: Any)
+@(count:Long,druidList:List[Druid],druidForm:Form[Druid])
+
+@import helper._
+
+@main("德鲁伊"){
+  <h1>德鲁伊成员:@count</h1>  
+  <div>
+    <ul>
+      @for(druid <- druidList){      
+        <li>@druid.id &nbsp; - &nbsp; @druid.name </li>
+      }
+      
+    </ul>
+    
+  </div>
+  
+  <div>
+    @form(action=routes.Application.addDruid) {
+      加入一个新的德鲁伊:@inputText(druidForm("name"))
+      <input type="submit" value="加入" />
+    }
+    
+  </div>
+}

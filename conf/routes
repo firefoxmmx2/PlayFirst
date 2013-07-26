@@ -74,5 +74,10 @@ GET    /coffee               controllers.Application.coffee
 GET    /coffeeMixins         controllers.Application.coffeeMixins
 GET    /coffeeControl        controllers.Application.coffeeControl
 #akka测试
-GET		/akka	controllers.Application.akka
-POST	/akka	controllers.Application.doAkka
+GET    /akka                 controllers.Application.akka
+POST   /akka                 controllers.Application.doAkka
+#德鲁伊
+GET    /druid                controllers.Application.druid
+POST   /druid/add            controllers.Application.addDruid
+POST   /druid/update         controllers.Application.updateDruid
+POST   /druid/delete/:id         controllers.Application.deleteDruid(id:Long)
