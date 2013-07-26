@@ -3,81 +3,88 @@
 # ~~~~
 
 # Home page
-GET    /                     controllers.Application.index
+GET    /                                            controllers.Application.index
+
+
 
 # Map static resources from the /public folder to the /assets URL path
-GET    /assets/*file         controllers.Assets.at(path="/public", file)
+GET    /assets/*file                                controllers.Assets.at(path="/public", file)
 
-GET    /tasks                controllers.Application.tasks
-POST   /tasks/:id/delete     controllers.Application.deleteTask(id:Long)
-POST   /tasks                controllers.Application.newTask
+#bootstrap
+GET    /assets/img/glyphicons-halflings-white.png   controllers.Assets.at(path="/public",file="images/glyphicons-halflings-white.png")
+GET    /assets/img/glyphicons-halflings.png         controllers.Assets.at(path="/public",file="images/glyphicons-halflings.png")
 
-GET    /bar                  controllers.Application.bar
-POST   /bar/add              controllers.Application.addBar
-GET    /json/bar             controllers.Application.listBar
+#task
+GET    /tasks                                       controllers.Application.tasks
+POST   /tasks/:id/delete                            controllers.Application.deleteTask(id:Long)
+POST   /tasks                                       controllers.Application.newTask
+
+GET    /bar                                         controllers.Application.bar
+POST   /bar/add                                     controllers.Application.addBar
+GET    /json/bar                                    controllers.Application.listBar
 
 #POST   /bodyParseAsMixed   controllers.Clients.saveAsMixed
-GET    /chunkedResponse      controllers.Application.chunkedResponse
-GET    /cometSocket          controllers.Application.comet
-GET    /cometMessage         controllers.Application.cometMessage
-GET    /cometMessage2        controllers.Application.cometMessage2
+GET    /chunkedResponse                             controllers.Application.chunkedResponse
+GET    /cometSocket                                 controllers.Application.comet
+GET    /cometMessage                                controllers.Application.cometMessage
+GET    /cometMessage2                               controllers.Application.cometMessage2
 
-GET    /httpHeader           controllers.Application.httpHeader
-GET    /httpHeader2          controllers.Application.httpHeader2
-GET    /cookie               controllers.Application.cookie
-GET    /discardCookie        controllers.Application.discardCookie
-GET    /changeCharset        controllers.Application.changeCharset
-GET    /session              controllers.Application.session_
-GET    /session2             controllers.Application.session_2
-GET    /saveSession          controllers.Application.saveSession
-GET    /appendSession        controllers.Application.appendSession
-GET    /removeSession        controllers.Application.removeSession
-GET    /newSession           controllers.Application.newSession
-GET    /webSocket            controllers.Application.webSocket
-GET    /webSocket2           controllers.Application.webSocket2
-GET    /json                 controllers.Application.sayHello
-GET    /json2                controllers.Application.sayHello2
-GET    /jsonRes              controllers.Application.sayHelloRes
-GET    /bodyParser           controllers.Application.toBodyParser
-POST   /textParser           controllers.Application.textParser
-POST   /tolerantTextParser   controllers.Application.tolerantTextParser
-POST   /fileParser           controllers.Application.fileParser
-POST   /jsonParser           controllers.Application.jsonParser
-POST   /mixedParser          controllers.Application.mixedParser
-POST   /lengthLimitParser    controllers.Application.lengthLimitParser
-GET    /jsonSearchResult     controllers.Application.jsonSearchResult
-GET    /jsonResult           controllers.Application.jsonResult
-POST   /xmlRequest           controllers.Application.xmlRequest
-POST   /xmlReqBetter         controllers.Application.xmlReqBetter
-POST   /xmlResponse          controllers.Application.xmlResponse
-GET    /fileUploadHtml       controllers.Application.fileUploadHtml
-POST   /fileRequest          controllers.Application.fileRequest
-GET    /ajaxUploadHtml       controllers.Application.ajaxUploadHtml
-POST   /ajaxUpload           controllers.Application.ajaxUpload
-GET    /barNameList          controllers.Application.barNameList
-GET    /firstBar             controllers.Application.firstBar
-GET    /barPatternMatching   controllers.Application.barPatternMatching
-GET    /barCount             controllers.Application.barCount
-GET    /barClob              controllers.Application.barSpecialDataTypeClob
-GET    /barBinary            controllers.Application.barSpecialDataTypeBinary
-GET    /barScalaQuery        controllers.Application.barScalaQuery
-GET    /book                 controllers.Application.toBooks
-GET    /booklist             controllers.Application.booklist
-POST   /book/add             controllers.Application.addBook
-POST   /user/add             controllers.Application.addUser
-GET    /addUser              controllers.Application.toAddUser
-GET    /userlist             controllers.Application.userlist
-GET    /login                controllers.Application.toLogin
-POST   /login                controllers.Application.login
+GET    /httpHeader                                  controllers.Application.httpHeader
+GET    /httpHeader2                                 controllers.Application.httpHeader2
+GET    /cookie                                      controllers.Application.cookie
+GET    /discardCookie                               controllers.Application.discardCookie
+GET    /changeCharset                               controllers.Application.changeCharset
+GET    /session                                     controllers.Application.session_
+GET    /session2                                    controllers.Application.session_2
+GET    /saveSession                                 controllers.Application.saveSession
+GET    /appendSession                               controllers.Application.appendSession
+GET    /removeSession                               controllers.Application.removeSession
+GET    /newSession                                  controllers.Application.newSession
+GET    /webSocket                                   controllers.Application.webSocket
+GET    /webSocket2                                  controllers.Application.webSocket2
+GET    /json                                        controllers.Application.sayHello
+GET    /json2                                       controllers.Application.sayHello2
+GET    /jsonRes                                     controllers.Application.sayHelloRes
+GET    /bodyParser                                  controllers.Application.toBodyParser
+POST   /textParser                                  controllers.Application.textParser
+POST   /tolerantTextParser                          controllers.Application.tolerantTextParser
+POST   /fileParser                                  controllers.Application.fileParser
+POST   /jsonParser                                  controllers.Application.jsonParser
+POST   /mixedParser                                 controllers.Application.mixedParser
+POST   /lengthLimitParser                           controllers.Application.lengthLimitParser
+GET    /jsonSearchResult                            controllers.Application.jsonSearchResult
+GET    /jsonResult                                  controllers.Application.jsonResult
+POST   /xmlRequest                                  controllers.Application.xmlRequest
+POST   /xmlReqBetter                                controllers.Application.xmlReqBetter
+POST   /xmlResponse                                 controllers.Application.xmlResponse
+GET    /fileUploadHtml                              controllers.Application.fileUploadHtml
+POST   /fileRequest                                 controllers.Application.fileRequest
+GET    /ajaxUploadHtml                              controllers.Application.ajaxUploadHtml
+POST   /ajaxUpload                                  controllers.Application.ajaxUpload
+GET    /barNameList                                 controllers.Application.barNameList
+GET    /firstBar                                    controllers.Application.firstBar
+GET    /barPatternMatching                          controllers.Application.barPatternMatching
+GET    /barCount                                    controllers.Application.barCount
+GET    /barClob                                     controllers.Application.barSpecialDataTypeClob
+GET    /barBinary                                   controllers.Application.barSpecialDataTypeBinary
+GET    /barScalaQuery                               controllers.Application.barScalaQuery
+GET    /book                                        controllers.Application.toBooks
+GET    /booklist                                    controllers.Application.booklist
+POST   /book/add                                    controllers.Application.addBook
+POST   /user/add                                    controllers.Application.addUser
+GET    /addUser                                     controllers.Application.toAddUser
+GET    /userlist                                    controllers.Application.userlist
+GET    /login                                       controllers.Application.toLogin
+POST   /login                                       controllers.Application.login
 #POST   /openIDCallback       controllers.Application.openIDCallback
-GET    /coffee               controllers.Application.coffee
-GET    /coffeeMixins         controllers.Application.coffeeMixins
-GET    /coffeeControl        controllers.Application.coffeeControl
+GET    /coffee                                      controllers.Application.coffee
+GET    /coffeeMixins                                controllers.Application.coffeeMixins
+GET    /coffeeControl                               controllers.Application.coffeeControl
 #akka测试
-GET    /akka                 controllers.Application.akka
-POST   /akka                 controllers.Application.doAkka
+GET    /akka                                        controllers.Application.akka
+POST   /akka                                        controllers.Application.doAkka
 #德鲁伊
-GET    /druid                controllers.Application.druid
-POST   /druid/add            controllers.Application.addDruid
-POST   /druid/update         controllers.Application.updateDruid
-POST   /druid/delete/:id         controllers.Application.deleteDruid(id:Long)
+GET    /druid                                       controllers.Application.druid
+POST   /druid/add                                   controllers.Application.addDruid
+POST   /druid/update                                controllers.Application.updateDruid
+POST   /druid/delete/:id                            controllers.Application.deleteDruid(id:Long)

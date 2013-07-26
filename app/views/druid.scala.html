@@ -2,6 +2,7 @@
 @(count:Long,druidList:List[Druid],druidForm:Form[Druid])
 
 @import helper._
+@import helper.twitterBootstrap._
 
 @main("德鲁伊"){
   <h1>德鲁伊成员:@count</h1>  
@@ -17,8 +18,8 @@
   
   <div>
     @form(action=routes.Application.addDruid) {
-      加入一个新的德鲁伊:@inputText(druidForm("name"))
-      <input type="submit" value="加入" />
+      加入一个新的德鲁伊:@inputText(druidForm("name"),args='label->"名称",'class->"form-search")
+      <button type="submit" value="加入">加入</button>
     }
     
   </div>
