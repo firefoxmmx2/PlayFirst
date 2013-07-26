@@ -18,14 +18,14 @@ object Druid {
 	}
 	def all() = {
 		DB.withConnection({ implicit con =>
-			SQL("select * from t_druid").as(allListResultSet *)
+			SQL("select id,name from t_druid").as(Druid.allListResultSet *)
 		})
 	}
 
 	def create(druid: Druid) = DB.withConnection({
 		implicit con =>
 			SQL("""
-				inset into t_druid (name) values({name})
+				insert into t_druid (name) values({name})
 			""").on("name" -> druid.name).executeInsert()
 	})
 
