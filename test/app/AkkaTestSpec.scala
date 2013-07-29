@@ -10,18 +10,18 @@ import play.api.Play.current
 object AkkaTestSpec extends Specification {
   class ReceiveString extends Actor {
     def receive = {
-      case x:String => {
-        Logger.info("receive string: x = "+x)
+      case x: String => {
+        Logger.info("receive string: x = " + x)
       }
     }
   }
   "Akka Receive Test" should {
     "should be receive" in {
-      var x:String = "1"
-      val myActor = Akka.system.actorOf(Props[ReceiveString], name="myactor")
+      var x: String = "1"
+      val myActor = Akka.system.actorOf(Props[ReceiveString], name = "myactor")
       myActor ! "Hello"
-      
-      x must startWith("1")
+
+      x must equalTo("1")
     }
   }
 }
