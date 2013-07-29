@@ -4,22 +4,48 @@
 @import helper._
 @import helper.twitterBootstrap._
 
+@styles = {
+        <style>
+
+        </style>
+}
+@script = {
+        <script type="text/javascript">
+            $(function(){
+
+                $("div  li a").each(function(){
+                    $(this).click(function(){
+                    var form  = $('<form action="druid/delete/'+$(this).attr("dataid")+'" method="post"></form>');
+                    form.appendTo('body');
+                    form.submit();
+                    });
+
+                });
+            });
+        </script>
+}
 @main("德鲁伊"){
+  @styles
+  @script
   <h1>德鲁伊成员:@count</h1>  
   <div>
     <ul>
-      @for(druid <- druidList){      
-        <li>@druid.id &nbsp; - &nbsp; @druid.name </li>
+      @for(druid <- druidList){
+        <li>@druid.id &nbsp; - &nbsp; @druid.name &nbsp; --> &nbsp; <a href="#" dataid="@druid.id">删除</a> </li>
       }
-      
     </ul>
     
   </div>
   
   <div>
     @form(action=routes.Application.addDruid) {
-      加入一个新的德鲁伊:@inputText(druidForm("name"),args='label->"名称",'class->"form-search")
-      <button type="submit" value="加入">加入</button>
+	加入一个新的德鲁伊:@inputText(druidForm("name"),
+      args='id->"druid_name",
+      '_label->"名称",
+      'class->"form-search",
+      '_showErrors->true,
+      '_help->"必填")
+      <input type="submit" value="加入" class="btn">
     }
     
   </div>
