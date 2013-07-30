@@ -10,3 +10,13 @@ views.addUser.address.road=路
 views.addUser.address.no=门牌号
 views.addUser.addUserButton=添加用户
 views.addUser.title=添加用户
+
+#德鲁伊
+views.druid.content.nav.title=内容
+views.druid.content.nav.content=德鲁伊议会
+views.druid.content.section.druidMember=德鲁伊议会的成员
+views.druid.a.delete=删除
+views.druid.content.section.form.msg=一个新生的德鲁伊加入
+views.druid.content.section.form.name.label=名称
+views.druid.content.section.form.name.help=必填
+views.druid.content.section.form.addBtn.text=加入

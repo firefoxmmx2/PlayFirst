@@ -5,48 +5,90 @@
 @import helper.twitterBootstrap._
 
 @styles = {
-        <style>
+<style>
 
-        </style>
+</style>
 }
 @script = {
-        <script type="text/javascript">
-            $(function(){
+<script type="text/javascript">
+    $(function(){
 
-                $("div  li a").each(function(){
-                    $(this).click(function(){
-                    var form  = $('<form action="druid/delete/'+$(this).attr("dataid")+'" method="post"></form>');
-                    form.appendTo('body');
-                    form.submit();
-                    });
+    $("div li a").each(function(){
+    $(this).click(function(){
+    var form = $('
+    <form action="druid/delete/'+$(this).attr(" dataid
+    ")+'" method="post"></form>');
+    form.appendTo('body');
+    form.submit();
+    });
 
-                });
-            });
-        </script>
+    });
+    });
+</script>
 }
 @main("德鲁伊"){
-  @styles
-  @script
-  <h1>德鲁伊成员:@count</h1>  
-  <div>
-    <ul>
-      @for(druid <- druidList){
-        <li>@druid.id &nbsp; - &nbsp; @druid.name &nbsp; --> &nbsp; <a href="#" dataid="@druid.id">删除</a> </li>
-      }
-    </ul>
-    
-  </div>
-  
-  <div>
-    @form(action=routes.Application.addDruid) {
-	加入一个新的德鲁伊:@inputText(druidForm("name"),
-      args='id->"druid_name",
-      '_label->"名称",
-      'class->"form-search",
-      '_showErrors->true,
-      '_help->"必填")
-      <input type="submit" value="加入" class="btn">
-    }
-    
-  </div>
+@styles
+@script
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+          <div class="container">
+             <div class="nav-collapse">
+                 <ul class="nav">
+                     <li class="">
+                        <a class="" href="#" title="概述">概述</a>
+                     </li>
+
+                     <li class="">
+                         <a class="" href="#" title="内容">内容</a>
+                     </li>
+
+                     <li class="">
+                         <a class="" href="#" title="关于">关于</a>
+                     </li>
+
+                 </ul>
+
+             </div>
+          </div>
+    </div>
+</div>
+
+<div class="container">
+    <header class="jumbotron subhead">
+        <h2>@Messages("views.druid.content.nav.title")</h2>
+        <p class="lead">@Messages("views.druid.content.nav.content")</p>
+        <div class="subnav">
+            <ul class="nav nav-pills">
+                <li class="">
+
+                </li>
+            </ul>
+        </div>
+
+    </header>
+    <section>
+        <h2>@Messages("views.druid.content.section.druidMember"):@count</h2>
+        <ul>
+            @for(druid <- druidList){
+            <li>@druid.id &nbsp; - &nbsp; @druid.name &nbsp; --> &nbsp; <a href="#" dataid="@druid.id">@Messages("views.druid.a.delete")</a></li>
+            }
+        </ul>
+    </section>
+
+    <section>
+        @form(action=routes.Application.addDruid) {
+        @Messages("views.druid.content.section.form.msg"):@inputText(druidForm("name"),
+        args='id->"druid_name",
+        '_label->Messages("views.druid.content.section.form.name.label"),
+        'class->"form-search",
+        '_showErrors->true,
+        '_help->Messages("views.druid.content.section.form.name.help")
+        )
+
+        <input type="submit" value="@Messages("views.druid.content.section.form.addBtn.text")" class="btn">
+        }
+
+    </section>
+    <footer></footer>
+</div>
 }
